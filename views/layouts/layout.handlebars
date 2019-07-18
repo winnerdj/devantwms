@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
+  <title>devantWMS</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no ,initial-scale=1, shrink-to-fit=no" name="viewport">
+
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.min.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- Theme style -->
+  
+  <link rel="stylesheet" href="/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../../bower_components/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.13.4/dist/bootstrap-table.min.css">
+  <link rel="stylesheet" href="/css/devantstyle.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+ 
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="/" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini">WMS</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Devant</b>WMS</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+
+
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <img src="/img/logistikus-icon.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{username}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="user-dropdown">
+                <a href="#"  data-toggle="modal" data-target="#changepassword">Change Password</a>
+              </li>
+              <li class="user-dropdown">
+                <a href="/users/logout">Sign out</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="/img/logistikus-logo.png" style="max-width:90%;"  alt="User Image">
+        </div>
+        <div class="pull-left info">
+        
+        </div>
+      </div>
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+      {{#if userpermissionmodule}}  
+        <li class="header">Dashboard</li>
+        <li><a href="/"><i class="fa fa-circle-o text-red"></i> <span>Dashboard</span></a></li>
+      </ul>
+      {{#ifIn 'Inbound' userpermissionmodule }}
+      <ul class="sidebar-menu" data-widget="tree">
+        
+        <li class="header">Inbound</li>
+        <li {{#compare modulename "asn"}} class="active" {{/compare}}><a href="/asn"><i class="fa fa-circle-o text-red"></i> <span>ASN</span></a></li>
+        <li {{#compare modulename "gr"}} class="active" {{/compare}}><a href="/gr"><i class="fa fa-circle-o text-yellow"></i> <span>Goods Receipt</span></a></li>
+        <li {{#compare modulename "putaway"}} class="active" {{/compare}}><a href="/putaway"><i class="fa fa-circle-o text-yellow"></i> <span>Putaway</span></a></li>
+      </ul>
+      {{/ifIn}}
+      {{#ifIn 'Outbound' userpermissionmodule }}
+      <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">Outbound</li>
+          <li {{#compare modulename "outbound"}} class="active" {{/compare}}><a href="/outbound"><i class="fa fa-circle-o text-red"></i> <span>Outbound Order</span></a></li>
+          <li {{#compare modulename "pick"}} class="active" {{/compare}}><a href="/pickplan"><i class="fa fa-circle-o text-red"></i> <span>Pick</span></a></li>
+          <li {{#compare modulename "dispatch"}} class="active" {{/compare}}><a href="/dispatch"><i class="fa fa-circle-o text-red"></i> <span>Dispatch</span></a></li>
+          <li {{#compare modulename "loading"}} class="active" {{/compare}}><a href="/loading"><i class="fa fa-circle-o text-red"></i> <span>Loading</span></a></li>
+      </ul>
+      {{/ifIn}}
+      <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">Midbound</li>
+          <li {{#compare modulename "stockAccuracy"}} class="active" {{/compare}}><a href="/stock_accuracy"><i class="fa fa-circle-o text-red"></i> <span>Stock Accuracy</span></a></li>
+          <li {{#compare modulename "bintobin"}} class="active" {{/compare}}><a href="/bin-to-bin"><i class="fa fa-circle-o text-red"></i> <span>Bin To Bin</span></a></li>
+
+        </ul>
+      
+        <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">Inventory</li>
+          <li {{#compare modulename "batch_uid_correction"}} class="active" {{/compare}}><a href="/batch_uid_correction"><i class="fa fa-circle-o text-red"></i> <span>Batch & UID Correction</span></a></li>
+          <li {{#compare modulename "stockConversion"}} class="active" {{/compare}}><a href="/stock_conversion"><i class="fa fa-circle-o text-red"></i> <span>Stock Conversion</span></a></li>
+          <li {{#compare modulename "stockinquiry"}} class="active" {{/compare}}><a href="/stockinquiry"><i class="fa fa-circle-o text-red"></i> <span>Stock Inquiry</span></a></li>
+        </ul>
+        {{#ifIn 'MasterData' userpermissionmodule }}
+        <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">Master Data</li>
+          <!--<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Batch Management</span></a></li>-->
+          <li><a href="/location" {{#compare modulename "location"}} class="active" {{/compare}}><i class="fa fa-circle-o text-red"></i> <span>Location Management</span></a></li>
+          <li><a href="/item" {{#compare modulename "item"}} class="active" {{/compare}}><i class="fa fa-circle-o text-red"></i> <span>Item Management</span></a></li>
+          <li><a href="/shippoint" {{#compare modulename "shippoint"}} class="active" {{/compare}}><i class="fa fa-circle-o text-red"></i> <span>Ship Point</span></a></li>
+          <li><a href="/users" {{#compare modulename "users"}} class="active" {{/compare}}><i class="fa fa-circle-o text-red"></i> <span>User Management</span></a></li>
+        </ul>
+        {{/ifIn}}
+        {{/if}}
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    
+
+
+
+    <!-- Main content -->
+    <section class="content">
+      {{#if success_msg}}
+        <div class="alert alert-success">{{{success_msg}}}</div>
+      {{/if}}
+
+      {{#if error_msg}}
+        <div class="callout callout-danger">{{{error_msg}}}</div>
+      {{/if}}
+
+      {{#if error}}
+        <div class="callout callout-danger">{{error}}</div>
+      {{/if}}
+
+      
+      {{{body}}}
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.1
+    </div>
+    <strong>Copyright &copy; {{ now }} .</strong> All rights
+    reserved.
+  </footer>
+
+
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+<!-- modal section-->
+<!--customercode modal-->
+<div class="modal fade" id="customerCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Customer List</h5> 
+      </div>
+      
+      <div class="modal-body">
+        
+        <table class=" table table-hover selectorTable" id="customerListTable" >
+          <thead>
+            <tr>
+              <th data-field="CustomerCode">Customer Code</th>
+              <th data-field="CustomerName">Customer Name</th>
+              <th data-field="Address1">Customer Address</th>
+            </tr>
+            
+          </thead>
+        </table>
+        <input type="hidden" id="giveCustomerTo">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/customercode modal-->
+
+<!--item modal-->
+<div class="modal fade" id="itemCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="close  pull-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Item List</h5>
+      </div>
+      <div class="modal-body">
+        <table class=" table table-hover selectorTable" id="itemListTable" >
+          <thead>
+            <tr>
+              <th data-field="ItemCode">Item Code</th>
+              <th data-field="ItemDescription">Item Description</th>
+              <th data-field="CaseBarcode">Case Barcode</th>
+            </tr>
+            
+          </thead>
+        </table>
+      </div>
+      <input type="hidden" id="giveItemTo">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/item modal-->
+
+
+<!--location modal-->
+<div class="modal fade" id="locationCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Item List</h5>
+      </div>
+      <div class="modal-body">
+        <table class=" table table-hover selectorTable" id="locationListTable" >
+          <thead>
+            <tr>
+              <th data-field="LocationCode">Location Code</th>
+              <th data-field="LocationDescription">Location Description</th>
+              <th data-field="LocationType">Location Type</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <input type="hidden" id="giveLocationTo">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/location modal-->
+<!--shippoint modal-->
+<div class="modal fade" id="shippointCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">ShipPointCode List</h5>
+      </div>
+      <div class="modal-body">
+        <table class=" table table-hover selectorTable" id="shippointListTable" >
+          <thead>
+            <tr>
+              <th data-field="ShipPointCode">Ship Point Code</th>
+              <th data-field="ShipPointName">Ship Point</th>
+              <th data-field="Address1">Address</th>
+              <th data-field="PostalCode">Postal Code</th>
+              <th data-field="City">City</th>
+              <th data-field="State">State</th>
+              <th data-field="Country">Country</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <input type="hidden" id="giveShippointCodeTo">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/shippoint modal-->
+<!--employee modal-->
+<div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Employee List</h5>
+       
+      </div>
+      <div class="modal-body">
+        <table class=" table table-hover selectorTable" id="employeeListTable" >
+          <thead>
+            <tr>
+              <th data-field="EmployeeID">Employee ID</th>
+              <th data-field="FirstName">First Name</th>
+              <th data-field="MiddleName">Middle Name</th>
+              <th data-field="LastName">Middle Name</th>
+              <th data-field="Role">Role</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <input type="hidden" id="giveEmployeeTo">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/employee modal-->
+
+
+
+<!--update modal-->
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form method="post" action="/users/changepw" id="changePWForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" class="form-control" placeholder="Current Password" name="currentPassword" autocomplete="current-password">
+            </div>
+            <div class="form-group">
+                <label>password</label>
+                <input type="password" class="form-control" placeholder="Password" name="password" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" class="form-control" placeholder="Confirm Password" name="confirmpassword" autocomplete="new-password">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary save_ch_password_btn" >Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--/update modal-->
+
+<!--confirmation modal-->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form method="post" action="/users/changepw" id="changePWForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        </div>
+        <div class="modal-body">
+            Please click confirm to proceed.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="confirm_btn">Confirm</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--/confirmation modal-->
+<!-- /modal section-->
+<!-- jQuery 3 -->
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- select2 -->
+<script src="/bower_components/select2/dist/js/select2.full.min.js"></script>
+
+<!-- AdminLTE App -->
+<script src="/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/js/demo.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+
+
+
+ <script>
+   $('.select2').select2();
+    let batch_list = [];
+    let batch_selectlist = [];
+    $( document ).ready(function() {
+    $.ajax({
+      url: "/batch/batchlist",
+      method: "GET",
+      dataType:"json",
+      success: function(data) {
+        if(data.length>0){
+          $.each(data, function(i, item) {
+            batch_selectlist +="<option>"+data[i].Batch+"</option>";
+            
+          });
+        }
+        
+      },
+        error: function(data) {
+          
+        console.log(data);
+      }
+    });
+  });  
+  </script>
+{{#if pagename}}
+  <script src="/js/pages/{{pagename}}.js"></script>
+{{/if}}
+
+<!-- page script -->
+<script>
+
+
+
+var $table = $('.table-pagination');
+
+
+  
+  function operateFormatter(value, row, index) {
+    return [
+      '<a class="remove" href="javascript:void(0)" title="Remove" style="text-align:center;">',
+      '<i class="fa fa-fw fa-times" style="color:red;text-align:center;"></i>',
+      '</a>'
+    ].join('')
+  }
+  window.operateEvents = {
+    'click .remove': function (e, value, row, index) {
+    if($("[data-index='"+index+"'] input[name='ID']").val())
+    $table.after( "<input type='hidden' name=DeleteID[] value='"+$("[data-index='"+index+"'] input[name='ID']").val()+"'>" );
+      $table.bootstrapTable('remove', {
+        field: 'id',
+        values: [row.id]
+      })
+    }
+  }
+
+
+
+$('.table-pagination').bootstrapTable({
+  // url: 'data1.json',
+    pagination: true,
+    search: false,
+    sortable: true
+});
+
+
+$('#customerListTable').bootstrapTable({
+  url: '/customer/customerlist',
+  pagination: true,
+  search: true,
+  sortable: true,
+  rowAttributes: function(row, index) {
+            return {
+                id: `x-bootstrap-row-${index+1}`
+            };
+        }
+});
+
+$('#itemListTable').bootstrapTable({
+  url: '/item/itemlist',
+  pagination: true,
+  search: true,
+  sortable: true
+});
+
+$('#locationListTable').bootstrapTable({
+  url: '/location/locationlist',
+  pagination: true,
+  search: true,
+  sortable: true
+});
+
+
+$('#shippointListTable').bootstrapTable({
+  url: '/shippoint/shippointlist',
+  pagination: true,
+  search: true,
+  sortable: true,
+  rowAttributes: function(row, index) {
+            return {
+                id: `x-bootstrap-row-${index+1}`
+            };
+        }
+});
+
+
+$('#employeeListTable').bootstrapTable({
+  url: '/employee/employeelist',
+  pagination: true,
+  search: true,
+  sortable: true,
+  rowAttributes: function(row, index) {
+            return {
+                id: `x-bootstrap-row-${index+1}`
+            };
+        }
+});
+
+$(document).on("click",".edit_btn",function(){
+  $("#inp_date").val($(this).closest("tr").find("td").eq( 1 ).text());
+  $("#inp_vendor").val($(this).closest("tr").find("td").eq( 2 ).text());
+  $("#inp_price_mode").val($(this).closest("tr").find("td").eq( 3 ).text());
+  $("#inp_remarks").val($(this).closest("tr").find("td").eq( 4 ).text());
+  $("#inp_due_date").val($(this).closest("tr").find("td").eq( 5 ).text());
+});
+</script>
+<script>
+$(document).on("click",".getCustomerCodeBtn",function(){
+  $("#giveCustomerTo").val($(this).attr("id"));
+});
+$(document).on("click",".getEmployeeBtn",function(){
+  $("#giveEmployeeTo").val($(this).attr("id"));
+});
+
+$(document).on("click","#customerListTable tbody tr",function(){
+  if(!$(this).hasClass("no-records-found")){
+    $("#"+$("#giveCustomerTo").val()).val($(this).find(":first-child").text());
+    $('#customerCodeModal').modal('hide');
+  }
+});
+
+$(document).on("click","#employeeListTable tbody tr",function(){
+  if(!$(this).hasClass("no-records-found")){
+    $("#"+$("#giveEmployeeTo").val()).val($(this).find(":first-child").text());
+    $('#employeeModal').modal('hide');
+  }
+});
+
+
+
+$(document).on("click",".getLocationCodeBtn",function(){
+  $("#giveLocationTo").val($(this).attr("id"));
+});
+$(document).on("click","#locationListTable tbody tr",function(){
+  if(!$(this).hasClass("no-records-found")){
+    $("#"+$("#giveLocationTo").val()).val($(this).find(":first-child").text());
+    $('#locationCodeModal').modal('hide');
+    $("#"+$("#giveLocationTo").val()).trigger("change")
+  }
+});
+
+
+
+$(document).on("click",".getItemCodeBtn",function(){
+  $("#giveItemTo").val($(this).attr("id"));
+});
+$(document).on("click","#itemListTable tbody tr",function(){
+  if(!$(this).hasClass("no-records-found")){
+    $("#"+$("#giveItemTo").val()).val($(this).find(":first-child").text());
+    let thistr = $("#"+$("#giveItemTo").val()).closest("tr").attr("data-index");
+    $('#'+$("#"+$("#giveItemTo").val()).closest("table").attr("id")+' [data-index="'+thistr+'"]').find("td:eq( 1 )").html($(this).find("td:eq( 1 )").text());
+    $('#itemCodeModal').modal('hide');
+    $("#"+$("#giveItemTo").val()).trigger("change")
+  }
+});
+
+
+$(document).on("click",".getshippointCodeBtn",function(){
+  $("#giveShippointCodeTo").val($(this).attr("id"));
+});
+$(document).on("click","#shippointListTable tbody tr",function(){
+  if(!$(this).hasClass("no-records-found")){
+    $("#"+$("#giveShippointCodeTo").val()).val($(this).find(":first-child").text());
+    $('#shippointCodeModal').modal('hide');
+    $("#"+$("#giveShippointCodeTo").val()).trigger("change");
+  }
+});
+
+
+
+
+$(document).on("change",".batch_head",function(){
+  $('.childBatch_'+$(this).data("id")).val($(this).val());
+});
+
+$(document).on("keyup",".UID_head",function(){
+  $('.childUID_'+$(this).data("id")).val($(this).val());
+});
+
+$(document).on("keyup",".location_head",function(){
+  $('.childLocationCode_'+$(this).data("id")).val($(this).val());
+});
+$(document).on("change",".dmgbatch_head",function(){
+  $('.dmgchildBatch_'+$(this).data("id")).val($(this).val());
+});
+
+$(document).on("keyup",".dmgUID_head",function(){
+  $('.dmgchildUID_'+$(this).data("id")).val($(this).val());
+});
+
+
+$(document).on("change",".newgoodbatch_head",function(){
+  $('.newgoodchildBatch_'+$(this).data("id")).val($(this).val());
+});
+
+$(document).on("keyup",".newgoodUID_head",function(){
+  $('.newgoodchildUID_'+$(this).data("id")).val($(this).val());
+});
+$(document).on("click",".add_gooditem_btn",function(){
+//  if($("#newgood_batch_"+$(this).data('id')).length){
+ // }else{
+     $( '<div id="newgood_batch_'+$(this).data('id')+$.now()+'" class="div_container"><a href="#" class="cancel_newgood_btn" data-id="'+$(this).data('id')+$.now()+'"><i class="fa fa-fw fa-times" style="color:red;float:right;margin-top:-10px;"></i></a><div class="row" id="batchhead_'+$(this).data('id')+$.now()+'"><div class="col-12 col-md-2"><label>ItemCode</label><input type="text" autocomplete="off"  value="'+$("#itemcode_batch_"+$(this).data('id')).val()+'" id="itemcode_batch_'+$(this).data('id')+$.now()+'" name="ItemCode_pa[]" class="newgoodItemCode_head form-control" readonly /></div><div class="col-12 col-md-2"><label>UID</label><input type="text" autocomplete="off"  class="newgoodUID_head form-control" id="newgooduid_batch_'+$(this).data('id')+$.now()+'" data-id= "batch_'+$(this).data('id')+'" name="UID_pa[]" required /></div><div class="col-12 col-md-2"><label>Batch</label><select  class="newgoodbatch_head form-control " id="newgoodbatch_batch_'+$(this).data('id')+$.now()+'" data-id= "batch_'+$(this).data('id')+$.now()+'" name="Batch_pa[]"  required><option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option></select></div><div class="col-12 col-md-2"><div class="col-lg-12 col-xm-2"><label>Good Items</label><div class="input-group"><input type="number"  class="count_head form-control" id="newgood_count_batch_'+$(this).data('id')+$.now()+'" required placeholder="#" /><span class="input-group-btn"><button class="btn btn-primary generate_newgood_uid_btn btn-sm" data-id="batch_'+$(this).data('id')+$.now()+'"><i class="fa fa-fw fa-plus-square"></i></button></span></div></div></div><div id="newgood_batch_'+$(this).data('id')+$.now()+'"></div></div>' ).insertAfter( $( "#batch_"+$(this).data('id') ) );
+ // }
+});
+
+$(document).on("click",".generate_newgood_uid_btn",function(event){
+  event.preventDefault();
+ 
+  const count = $("#newgood_count_"+$(this).data("id")).val();
+   
+  const ItemCode = $("#itemcode_"+$(this).data("id")).val();
+
+  const UID = $("#newgooduid_"+$(this).data("id")).val();
+
+  const Batch = $("#newgoodbatch_"+$(this).data("id")).val();
+  //if(!$('.added_row_'+$(this).data("id")).length || count == 0){
+  //   $('.added_row_'+$(this).data("id")).remove();
+     
+    for(i=0;i<count;i++){
+      $("#newgood_"+$(this).data("id")).append('<div class="row added_newgood_row_'+$(this).data("id")+"_"+i+'"><div class="col-12 col-md-6"><label>Serial No</label><input type="hidden" name="ItemCode[]" class="form-control ItemCode_'+ItemCode+'" value="'+ItemCode+'" /><input type="hidden" name="UID[]" class="form-control newgoodchildUID_'+$(this).data("id")+'" value="'+UID+'" /><input type="hidden" name="Batch[]" class="form-control newgoodchildBatch_'+$(this).data("id")+'" value="'+Batch+'" /><input type="hidden" name="StockStatus[]" class="form-control"  value="Good" readonly required><div class="input-group"><input type="text" autocomplete="off" name="SerialNo[]" class="form-control req" required /><span class="input-group-btn"><button class="btn btn-default remove_generated_serialinput_btn btn-sm" tabindex=14000 data-id="added_row_'+$(this).data("id")+"_"+i+'"><i class="fa fa-fw fa-times"></i></button></span></div></div><hr /></div>');
+    }
+ // }
+//  $("#newgood_"+$(this).data("id")).append('<div class="row added_newgood_row_'+$(this).data("id")+"_"+i+'"><div class="col-12 col-md-6"><label>Serial No</label><input type="hidden" name="ItemCode[]" class="form-control ItemCode_'+ItemCode+'" value="'+ItemCode+'" /><input type="hidden" name="UID[]" class="form-control newgoodchildUID_'+$(this).data("id")+'" value="'+UID+'" /><input type="hidden" name="Batch[]" class="form-control newgoodchildBatch_'+$(this).data("id")+'" value="'+Batch+'" /><input type="hidden" name="StockStatus[]" class="form-control"  value="Good" readonly required><div class="input-group"><input type="text" name="SerialNo[]" class="form-control req" required /><span class="input-group-btn"><button class="btn btn-default remove_generated_serialinput_btn btn-sm" tabindex=14000 data-id="added_row_'+$(this).data("id")+"_"+i+'"><i class="fa fa-fw fa-times"></i></button></span></div></div><hr /></div>');
+});
+
+$(document).on("click",".add_dmgitem_btn",function(){
+  if($("#dmg_batch_"+$(this).data('id')).length){
+  }else{
+     $( '<div id="dmg_batch_'+$(this).data('id')+'" class="div_container"><a href="#" class="cancel_dmg_btn" data-id="'+$(this).data('id')+'"><i class="fa fa-fw fa-times" style="color:red;float:right;margin-top:-10px;"></i></a><div class="row" id="batchhead_'+$(this).data('id')+'"><div class="col-12 col-md-2"><label>ItemCode</label><input type="text" autocomplete="off" value="'+$("#itemcode_batch_"+$(this).data('id')).val()+'" id="itemcode_batch_'+$(this).data('id')+'" name="ItemCode_pa[]" class="dmgItemCode_head form-control" readonly /></div><div class="col-12 col-md-2"><label>UID</label><input type="text" autocomplete="off" class="dmgUID_head form-control" id="dmguid_batch_'+$(this).data('id')+'" data-id= "batch_'+$(this).data('id')+'" name="UID_pa[]" required /></div><div class="col-12 col-md-2"><label>Batch</label><select  class="dmgbatch_head form-control " id="dmgbatch_batch_'+$(this).data('id')+'" data-id= "batch_'+$(this).data('id')+'" name="Batch_pa[]"  required><option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option></select></div><div class="col-12 col-md-2"><div class="col-lg-12 col-xm-2"><label>Damaged Items</label><div class="input-group"><input type="number"  class="count_head form-control" id="dmg_count_batch_'+$(this).data('id')+'" required placeholder="#" /><span class="input-group-btn"><button class="btn btn-primary generate_dmg_uid_btn btn-sm" data-id="batch_'+$(this).data('id')+'"><i class="fa fa-fw fa-plus-square"></i></button></span></div></div></div></div>' ).insertAfter( $( "#batch_"+$(this).data('id') ) );
+  }
+});
+
+
+
+$(document).on("click",".cancel_dmg_btn",function(event){
+  event.preventDefault();
+  const thisdataid = $(this).attr("data-id");
+  $("#dmg_batch_"+thisdataid).remove();
+});
+$(document).on("click",".cancel_newgood_btn",function(event){
+  event.preventDefault();
+  const thisdataid = $(this).attr("data-id");
+  $("#newgood_batch_"+thisdataid).remove();
+});
+
+$(document).on("click",".inputclear",function(){
+  $(this).prev('input').val('');
+  $(this).toggle();
+});
+
+$(document).on("keyup, change",".inputWclear",function(){
+  $(this).parent().find(".inputclear").show();
+});
+
+
+
+
+
+
+
+$(document).on('click','.new_row_uid',function(){
+  
+  let thisrow = $(this).parent().closest(".row").attr("id");
+  let oldrowid = thisrow.split("_")[1];
+  let rowid = thisrow.split("_")[1]+"-"+$.now(); 
+  
+  $( "#good_batch_"+oldrowid ).after( '<div class="row" id="batchhead_'+rowid+'"><div class="col-12 col-md-2"><label>ItemCode</label><input type="hidden"  class="batch_head form-control " value="'+$( "#"+thisrow+" .batch_head" ).val()+'" id="ShipPointCode_batch_'+rowid+'" data-id= "ShipPointCode_'+rowid+'" name="ShipPointCode_pa[]"  required><input type="text" autocomplete="off" value="'+$( "#"+thisrow+" .ItemCode_head" ).val()+'" id="itemcode_batch_'+rowid+'" name="ItemCode_pa[]" class="ItemCode_head form-control req" readonly /></div><div class="col-11 col-md-1"><label>SO No.</label><input type="text" autocomplete="off" name="SalesOrderNo_pa[]"  value="'+$( "#"+thisrow+" .SalesOrderNo_head" ).val()+'" id="SalesOrderNo_batch_'+rowid+'" name="SalesOrderNo_pa[]" class="SalesOrderNo_head form-control req" readonly /><input type="hidden" name="PONo_pa[]"  value="'+$( "#"+thisrow+" .PONo_head" ).val()+'" id="PONo_batch_'+rowid+'" name="PONo_pa[]" class="PONo_head form-control req" readonly /></div><div class="col-12 col-md-2"><label>UID</label><input type="text" autocomplete="off" class="UID_head form-control req" id="uid_batch_'+rowid+'" data-id= "batch_'+rowid+'" name="UID_pa[]" required /></div><div class="col-12 col-md-2"><label>Batch</label><select  class="batch_head form-control req" id="batch_batch_'+rowid+'" data-id= "batch_'+rowid+'" name="Batch_pa[]"  required><option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option></select></div><div class="col-12 col-md-1"><label>Location</label><input type="text" autocomplete="off" class="location_head form-control req" id="locationCode_batch_'+rowid+'" data-id= "batch_'+rowid+'" name="LocationCode_pa[]"  required></div><div class="col-12 col-md-2"><div class="col-lg-12 col-xm-2"><label># Items</label><div class="input-group"><input type="number"  class="count_head form-control" id="count_batch_'+rowid+'" value="{{OrderQty}}" required placeholder="#" /><span class="input-group-btn"><button class="btn btn-primary generate_pp_serial_btn btn-sm" data-id="batch_'+rowid+'"><i class="fa fa-fw fa-plus-square"></i></button></span></div></div></div><div class="col-12 col-md-2"><label style="color:white">-</label><input type="Submit" value="remove UID" class="btn form-control btn-danger remove_row_uid" ></div></div><div id="good_batch_'+rowid+'"></div>' );
+ 
+});
+
+$(document).on('click','.remove_row_uid',function(){
+  
+  let thisrow = $(this).parent().closest(".row").attr("id");
+  let rowid = thisrow.split("_")[1];
+  $("#"+thisrow).remove();
+  $("#good_batch_"+rowid).remove();
+ 
+});
+$(document).on('click','.updatelocation_btn',function(){
+    const thisindex = $(this).closest('tr').attr('data-index');
+    $("#UItemCode").val($("[data-index='"+thisindex+"'] td").eq(0).text());
+    $("#UItemDescription").val($("[data-index='"+thisindex+"'] td").eq(1).text());
+    $("#UItemCategory").val($("[data-index='"+thisindex+"'] td").eq(2).text());
+    $("#UCaseBarcode").val($("[data-index='"+thisindex+"'] td").eq(3).text());
+    $("#ULength").val($("[data-index='"+thisindex+"'] td").eq(4).text());
+    $("#UHeight").val($("[data-index='"+thisindex+"'] td").eq(5).text());
+})
+/*
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+window.addEventListener("keydown", keyListener, false);
+
+function keyListener(e) {
+	if(e.keyCode == 123) {
+		e.returnValue = false;
+	}
+}*/
+
+$(document).on("click", "#changePWForm :submit", function(event){
+  event.preventDefault();
+  const FormData = $("#changePWForm").serialize();
+  $.ajax({
+    url: "/users/validate_cp",
+    data: FormData,
+    method: "POST",
+    dataType:"json",
+    success: function(data) {
+        for(var i in data) {
+        }
+        if(data.errors.length>0){
+          $("#changepassword .modal-body").html().prepend(data.errors);
+        }
+    },
+    error: function(data) {
+        console.log(data);
+    }
+  });
+});
+
+
+/////////////GR new UI
+
+/////GR UPLOAD
+$(document).on('click',"#GRUpload :submit",(function(e) {
+  e.preventDefault();
+  formData = new FormData();
+ formData.append('upload_GR', $("#upload_GR")[0].files[0]);
+  $.ajax({
+  url: "/gr/uploadgr",
+   type: "POST",
+   data:  formData,
+   contentType: false,
+         cache: false,
+   processData:false,
+   //async: false,
+   beforeSend : function()
+   {
+    //$("#preview").fadeOut();
+    $("#err").fadeOut();
+   },
+   success: function(data)
+      {
+        function hasValue(elem,val) {
+            return $(elem).filter(function() { return $(this).val()==val; }).length > 0;
+        }
+        for(var i in data) {
+          let thistable = "";
+          if(data[i].StockStatus=="G"){
+              StockStatus = "Good"
+            }else if(data[i].StockStatus=="D"){
+              StockStatus = "Damaged"
+            }else if(data[i].StockStatus=="A"){
+              StockStatus = "Aging"
+            }else if(data[i].StockStatus=="DF"){
+              StockStatus = "Defective"
+            }else{
+              StockStatus = "Good"
+            }
+          if(hasValue(".UID_pa",data[i].UID)){
+           thistable  = $("input[value='"+data[i].UID+"']").closest("table").attr("id");
+          }else{
+            $("#"+data[i].ItemCode).collapse('show');
+            $("#"+data[i].ItemCode+"_createuid").trigger("click");
+             thistable = $("input[value='"+data[i].ItemCode+"']:last").closest("table").attr("id");
+            $("#"+thistable+" .UID_pa").val(data[i].UID);
+            $("#"+thistable+" .Batch_pa").val(data[i].Batch);
+            $("#"+thistable+" .StockStatus_pa").val(StockStatus);
+          }
+
+          if(!hasValue("input[name='SerialNo[]']",data[i].SerialNo)){
+            let dataid =  $("#GRSerialNoList_tbl"+data[i].ItemCode+" tr").find( ":contains('"+data[i].SerialNo+"')" ).parent().attr( "id");
+            $("#"+thistable+" tbody").append('<tr><td colspan="2">'+data[i].SerialNo+'<input type="hidden" name="SerialNo[]" value='+data[i].SerialNo+'><input type="hidden" name="ItemCode[]" value='+data[i].ItemCode+' class="ItemCode_'+data[i].ItemCode+'"><input type="hidden" name="StockStatus[]" value='+StockStatus+'><input type="hidden" name="Batch[]" value='+data[i].Batch+'><input type="hidden" name="UID[]" value='+data[i].UID+'></td><td class="damaged_td"></td><td><i class="fa fa-fw fa-times grremovetablelist" style="color:red;text-align:center;" data-id="'+dataid+'" data-itemcode="'+data[i].ItemCode+'" data-serial="'+data[i].SerialNo+'"></i></td></tr>')
+            $("#"+dataid).addClass( "selected_hidden");   
+          }
+         
+        }   
+        $('#uploadGRModal').modal('hide');        
+        $("#GRUpload")[0].reset(); 
+      },
+     error: function(e) 
+      {
+        $("#err").html(e).fadeIn();
+      }          
+    });
+ }));
+/////end GR UPLOAD
+
+
+
+
+
+$(document).on('click','.createuid_btn',function(){
+  let thisbody = $(this).closest('.panel-body').attr('id');
+  let dataid = $(this).attr("data-id");
+  $("#"+thisbody).append('<table class="table table-bordered" id="'+$.now()+'"><thead><tr><th><label>UID</label><input type="hidden" name="ItemCode_pa[]"  value="'+dataid+'" class="form-control ItemCode_pa"><input type="text" autocomplete="off" name="UID_pa[]" class="form-control UID_pa"></th><th><label>Batch</label><select class="form-control Batch_pa" name="Batch_pa[]" ><option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option></select></th><th><label>Stock Status</label><select class="form-control StockStatus_pa" name="StockStatus_pa[]" ><option>Good</option><option>Damaged</option><option>Aging</option><option>Defective</option></select></th><th><i class="fa fa-times removeNewUID" style="float:right; color:red;cursor: pointer;"></i><br><button class="btn btn-success GRaddItemList" data-itemcode = "'+dataid+'" data-toggle="modal" data-target="#'+dataid+'Modal" data-backdrop="static" data-keyboard="false">Add</button></th></tr></thead><tbody></tbody></table>');
+})
+$(document).on('click','.GRaddItemList',function(){
+  let thisvalue = $(this).closest('.table').attr('id');
+  let thistable = $(this).attr("data-itemcode");
+  $("#"+thistable+"Modal .gr_table_src").val(thisvalue);
+})
+$(document).on('click','.removeNewUID',function(){
+  let thisvalue = $(this).closest('.table').attr('id');
+  let thistable = $(this).attr("data-itemcode");
+  $("#"+thisvalue+" tbody").find('tr').each (function() {
+    let thistrid = $(this).find('.grremovetablelist').attr('data-id');
+    $("#"+thistrid).removeClass("selected_hidden");
+  });
+  $("#"+thisvalue).remove();
+})
+
+$(document).on('click','.GRSerialNoList_tbl tr',function(){
+  if($(this).hasClass("selected")){
+    $(this).removeClass("selected");
+  }else{
+    $(this).addClass("selected");
+  }
+})
+$(document).on('click','.canceluid_btn',function(){
+  let thisid = $(this).closest(".panel-collapse").attr('id');
+  $("#GRSerialNoList_tbl"+thisid+" tr").removeClass("chosen");
+})
+$(document).on('click','.add_chosen_gr_item_btn',function(){
+  let thisid = $(this).closest(".panel-collapse").attr('id');
+  let srctable = $("#"+thisid+" .gr_table_src").val();
+  let parentUID = $("#"+srctable+" .UID_pa").val();
+  let parentItemCode = $("#"+srctable+" .ItemCode_pa").val();
+  let parentBatch = $("#"+srctable+" .Batch_pa").val();
+    let parentStockStatus = $("#"+srctable+" .StockStatus_pa").val();
+  let dmginput = "";
+  if($("#"+srctable+" .StockStatus_pa").val()=="Damaged"){
+     dmginput = '<input type="text" autocomplete="off" name="Reason[]" placeholder="Reason" class="req form-control">';
+  }
+  $("#GRSerialNoList_tbl"+thisid+" .selected").each(function( index ) {
+      $("#"+srctable+" tbody").append('<tr><td colspan="2">'+$(this).text()+'<input type="hidden" name="SerialNo[]" value='+$(this).text()+'><input type="hidden" name="ItemCode[]" value='+parentItemCode+' class="ItemCode_'+parentItemCode+'"><input type="hidden" name="StockStatus[]" value='+parentStockStatus+'><input type="hidden" name="Batch[]" value='+parentBatch+'><input type="hidden" name="UID[]" value='+parentUID+'></td><td class="damaged_td">'+dmginput+'</td><td><i class="fa fa-fw fa-times grremovetablelist" style="color:red;text-align:center;" data-id="'+$(this).attr("id")+'" data-itemcode="'+parentItemCode+'" data-serial="'+$(this).text()+'"></i></td></tr>');
+      $(this).removeClass("selected");
+      $(this).addClass("selected_hidden");
+  });
+  $('#'+thisid+"Modal").modal('toggle');
+});
+$(document).on('click','.grremovetablelist',function(){
+  let thisid = $(this).closest(".panel-collapse").attr('id');
+  let thistrid = $(this).attr("data-id");
+  $("#"+thistrid).removeClass("selected_hidden");
+  $(this).closest("tr").remove();
+});
+
+
+$(document).on('change','.UID_pa',function(){
+  let thistbl = $(this).closest(".table").attr('id');
+  $("#"+thistbl+" input[name='UID[]']").val($(this).val());
+});
+$(document).on('change','.Batch_pa',function(){
+  let thistbl = $(this).closest(".table").attr('id');
+  $("#"+thistbl+" input[name='Batch[]']").val($(this).val());
+});
+$(document).on('change','.StockStatus_pa',function(){
+  let thistbl = $(this).closest(".table").attr('id');
+  $("#"+thistbl+" input[name='StockStatus[]']").val($(this).val());
+  if($(this).val()=="Damaged"){
+    $("#"+thistbl+" .damaged_td").html('<input type="text" autocomplete="off" name="Reason[]" placeholder="Reason" class="req form-control">')
+  }else{
+    $("#"+thistbl+" .damaged_td").html("");
+  }
+  
+});
+$(document).on('click ','.new_serialno_btn',function(){
+  let thisid = $(this).closest(".panel-collapse").attr('id');
+  let thistbl = $(this).closest(".table").attr('id');
+  $("#inp_new_serialno_src").val($("#"+thisid+" .GRSerialNoList_tbl").attr("id"));
+});
+$(document).on('click ','#save_new_serialno_btn',function(){
+  let thistbl =  $("#inp_new_serialno_src").val();
+  let thisModal = $("#"+thistbl).closest(".panel-collapse").attr('id');
+  
+  if($("#inp_new_serialno").val().trim()!=''){
+  function checkExist(){
+    let exist = 0;
+    $("#"+thistbl).find('td').each (function() {
+      if($(this).text()==$("#inp_new_serialno").val().trim()){
+        exist=1;
+      }
+    }); 
+    return exist;
+  }
+    if(checkExist()==true){
+      $("#error_alert_newserialno").html("<h5>Serial No already in the list.</h5>").fadeIn().fadeOut(1800);
+    }else{
+      $('#add_serialno_modal').modal('toggle');
+      $("#"+thisModal+" .GRSerialNoList").animate({ scrollTop: 5000 }, "slow");   
+      $("#"+thistbl).append("<tr id='"+$.now()+"' ><td>"+$("#inp_new_serialno").val().trim()+"</td></tr>");
+      $("#"+thistbl+" #"+$.now()).hide().fadeIn(999);
+      $("#inp_new_serialno").val("");
+    }
+  }else{
+    $("#error_alert_newserialno").html("<h5>Serial No is empty</h5>").fadeIn().fadeOut(1800);
+  }
+});
+
+$('#add_serialno_modal').on('hide.bs.modal', function () {
+  $("#error_alert_newserialno").hide();
+})
+$('#add_serialno_modal').on('shown.bs.modal', function () {
+  $("#inp_new_serialno").val("");
+})
+
+$(document).on("click", "#update_gr_form :submit", function(event){
+  event.preventDefault();
+  if($(this).hasClass("submit_btn")){
+    let error_list = [];
+    let req_error =0;
+    let btnval = $(this).val();
+
+    async function validate(){
+      if(btnval!="Cancel"){
+        $('.req').each(function() {
+        if(!$(this).val()||$.trim($(this).val()).length == 0){
+              error_list.push('<li>Please fill all required fields</li>');
+            return false;
+          }
+        });
+          var allValueArray = await $("input[name='UID_pa[]']").map(function() {
+            if ($(this).val() != '')
+            return $(this).val()
+          }).get();
+          var duplicateValueArray = await allValueArray.filter(function(element, pos) {
+          if(allValueArray.indexOf(element) != pos){
+            return true;
+            }
+            else{
+            return false;
+            }
+          });
+          if(duplicateValueArray!=0){
+            error_list.push('<li>UID cannot be duplicate</li>');
+          }else{
+            if($('input[name="UID_pa[]"]').filter(function () { return !!this.value;  }).length!=0){
+              await $.ajax({
+                url: "/gr/check_uid_exist",
+                data: $("input[name='UID_pa[]']").serialize(),
+                method: "GET",
+                dataType:"json",
+                success: function(data) {
+                    if(data.length>0){
+                      error_list.push('<li>UID '+data+' already exist</li>');
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+              });
+            }
+          }
+        if($('input[name="SerialNo[]"]').filter(function () { return !!this.value;  }).length!=0){
+          await $.ajax({
+            url: "/gr/check_serialno_exist",
+            data: $("input[name='SerialNo[]'],[name='ItemCode[]']").serialize(),
+            method: "POST",
+            dataType:"json",
+            success: function(data) {
+              if(data.length>0){
+                error_list.push('<li>Serial No '+data+' already exist</li>');
+              }
+            },
+              error: function(data) {
+              console.log(data);
+            }
+          });
+        }
+        
+        if(btnval=='Short Close'){
+          if( !$('input[name="SerialNo[]"]').length )
+          {
+            error_list.push('<li>No item to receive.</li>');
+          }else{
+            await $.ajax({
+              url: "/gr/check_gr_dtl_count?GRNo="+$("#GRNoInp").val(),
+              method: "GET",
+              dataType:"json",
+              success: function(data) {
+                
+                  for(var i in data) {
+                    if($('.ItemCode_'+data[i].ItemCode).length>data[i].ItemCount)
+                    {
+                      error_list.push('<li>ASN qty does not match with GR qty in item : '+data[i].ItemCode+'</li>');
+                    }
+                  }
+              },
+              error: function(data) {
+                  console.log(data);
+              }
+            });
+          }
+        }else{
+        await $.ajax({
+            url: "/gr/check_gr_dtl_count?GRNo="+$("#GRNoInp").val(),
+            method: "GET",
+            dataType:"json",
+            success: function(data) {
+                for(var i in data) {
+                  if($('.ItemCode_'+data[i].ItemCode).length!= data[i].ItemCount)
+                  {
+                    error_list.push('<li>ASN qty does not match with GR qty in item : '+data[i].ItemCode+'</li>');
+                  }
+                }
+            },
+            error: function(data) {
+                console.log(data);
+            }
+          });
+        }
+      }
+    }
+    
+    
+    function aftervalidation(){
+      if (error_list === undefined || error_list.length == 0) {//if no error
+          var GRStatus = "";
+          if(btnval=="Ammend"){
+            GRStatus = "Ammend";
+          }else if(btnval=="Cancel"){
+            GRStatus = "Cancelled";
+          }else if(btnval=="Short Close"){
+            GRStatus = "Short Closed";
+          }else if(btnval=="Goods Receipt and Putaway"){
+            GRStatus = "Goods Receipt";
+          }
+        $('#submit_action').val(GRStatus);
+        $("#confirmationModal").modal();
+        $(document).on("click", "#confirm_btn", function(e){
+            $("#update_gr_form").submit();
+        });
+        
+      }else{
+          $(".alert").remove();
+          $( '<div class="alert alert-danger" id="err_msg_div">'+error_list.join("")+'</div>').insertBefore( "#update_gr_form" );
+          $('html, body').animate({ scrollTop: 0 }, "slow");
+      }
+    }
+    async function process_form(){
+      await validate();
+      await aftervalidation();
+    }
+    process_form();
+  }
+  
+});
+
+
+
+
+
+///// UPLOAD
+$(document).on('click',"#StockAccuracypload :submit",(function(e) {
+    e.preventDefault();
+
+    if( document.getElementById("upload_stockaccuracy").files.length == 0 ){
+      alert("no files selected");
+    }else{
+      formData = new FormData();
+      formData.append('upload_stockaccuracy', $("#upload_stockaccuracy")[0].files[0]);
+      $.ajax({
+      url: "/stock_accuracy/uploadstockaccuracy",
+       type: "POST",
+       data:  formData,
+       contentType: false,
+             cache: false,
+       processData:false,
+       beforeSend : function()
+       {
+        $("#err").fadeOut();
+       },
+       success: function(data)
+          {
+            $(".added_tr").remove();//remove all added tr
+            $(".err_tr").removeClass("err_tr");//remove error class
+            $(".has-error").removeClass("has-error");//remove error class
+            $("#err_msg_div").remove();//remove div
+            $("input[name='Variance']").val(0);//remove div
+            $("input[name='ActualQty[]']").val('');
+            $("input[name='ActualLocation[]']").val('');
+            for(var i in data['thisresult']) {
+              
+              const updateVal = (thistr)=>{
+                
+                $("#"+thistr+" input[name='ActualQty[]']").val(1);
+                $("#"+thistr+" td:eq(4) p").text(1);
+                $("#"+thistr+" input[name='ActualLocation[]']").val(data['thisresult'][i].Location);
+                $("#"+thistr+" td:eq(6) p").text(data['thisresult'][i].Location);
+                if($("#"+thistr+" input[name='Location[]']").val()!= data['thisresult'][i].Location){
+                  $("#"+thistr+" .actuallocation").addClass('has-error');
+                }
+                if($("#"+thistr+" input[name='ActualQty[]']").val()!= $("#"+thistr+" input[name='Qty[]']").val()){
+                  $("#"+thistr+" .actualqty").addClass('has-error');
+                }
+              }
+  
+              if($("#"+data['thisresult'][i].SerialNo+"_serial").length>0){
+                const thistr = $("#"+data['thisresult'][i].SerialNo+"_serial").attr("id");
+                updateVal(thistr);
+              }else{
+                if($("."+data['thisresult'][i].ItemCode+"_itemcode").length>0){
+                  const thistr = $("."+data['thisresult'][i].ItemCode+"_itemcode:last").attr("id");
+                  $("#"+thistr)
+                  .clone()
+                  .attr('id', data['thisresult'][i].SerialNo+"_serial")
+                  .addClass("added_tr")
+                  .insertAfter("#"+thistr);
+                  
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(2) p").text(data['thisresult'][i].SerialNo);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(2) input[name='SerialNo[]']").val(data['thisresult'][i].SerialNo);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(3) p").text('0');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(3) input[name='Qty[]']").val('0');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(5) input[name='Location[]']").val('');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(5) p").text('');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(0) input[name='ID[]']").val('');
+                  updateVal(data['thisresult'][i].SerialNo+"_serial");
+                }else{
+                    
+                    const thistr = $("#stock_accuracy_edit_item_tbl tr:last").attr("id");
+                     $("#"+thistr)
+                    .clone()
+                    .attr('id', data['thisresult'][i].SerialNo+"_serial")
+                    .attr("class","")
+                    .addClass(data['thisresult'][i].ItemCode+"_itemcode")
+                    .addClass("added_tr")
+                    .insertAfter("#"+thistr);
+
+                    //function for attr
+                    function findWithAttr(array, attr, value) {
+                      for(var i = 0; i < array.length; i += 1) {
+                          if(array[i][attr] === value) {
+                              return i;
+                          }
+                      }
+                      return -1;
+                    }
+                  const ItemIndex = findWithAttr(data['getItemsDescription'], 'ItemCode', data['thisresult'][i].ItemCode);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(0) input[name='ItemCode[]']").val(data['thisresult'][i].ItemCode);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(0) p").text(data['thisresult'][i].ItemCode);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(0) input[name='ID[]']").val('');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(1)").html(data['getItemsDescription'][ItemIndex].ItemDescription);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(2) p").text(data['thisresult'][i].SerialNo);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(2) input[name='SerialNo[]']").val(data['thisresult'][i].SerialNo);
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(3) p").text('0');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(3) input[name='Qty[]']").val('0');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(3) p").text('0');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(5) input[name='Location[]']").val('');
+                  $("#"+data['thisresult'][i].SerialNo+"_serial td:eq(5) p").text('');
+                  updateVal(data['thisresult'][i].SerialNo+"_serial");
+                }
+                
+              }
+            }
+  
+  
+            //making all empty quantity to 0
+            var emptyTextBoxes = $('input[name="ActualQty[]"]').filter(function() { return this.value == ""; });
+            emptyTextBoxes.each(function() {
+              $(this).val(0);
+              $(this).closest('tr').find("td:eq(4) p").text(0);
+              $(this).closest('tr').addClass('has-error');
+            });
+  
+            //displaying variances
+            let err_arr = [];
+            $(".has-error").closest('tr').addClass('err_tr');  
+        
+            $('.err_tr').each(function() {
+              const thisid = $(this).find("td:eq(2) p").text().trim();
+              $(this).find("input[name='Variance[]']").val(1);
+              err_arr.push("<a href='#' class='err_serial_link' data-id='"+thisid+"'>"+thisid+"</a>");
+            });
+  
+            if(err_arr.length>0){
+              $( '<div class="alert alert-warning" id="err_msg_div">Variances ('+err_arr.length+'): [ '+err_arr.join(", ")+' ]</div>').insertBefore( "#update_stock_accuracy_form" );
+            }else{
+              $("#err_msg_div").remove();
+            }
+            //end of displaying variances
+            err_arr = [];
+            $('#uploadStockAccuracyModal').modal('hide');        
+            $("#StockAccuracypload")[0].reset(); 
+          },
+         error: function(e) 
+          {
+            $("#err").html(e).fadeIn();
+          }          
+        });
+    }
+   }));
+  /////end UPLOAD
+
+  //stock accuracy on load
+$(document).ready(function(e){
+  $("#loading_tr").hide();
+  $("#stock_accuracy_edit_item_tbl tbody").show();
+  if($("input[name='Status']").val()=="Approved")
+  {
+    let err_arr_link = [];
+    let err_arr = $('input[name="Variance[]"]').filter(function() { return this.value == "1"; });
+      err_arr.each(function() {
+      $(this).closest('tr').addClass('err_tr');
+      let thisid = $(this).closest('tr').find("input[name='SerialNo[]']").val();
+      err_arr_link.push("<a href='#' class='err_serial_link' data-id='"+thisid+"'>"+thisid+"</a>");
+    });
+    
+    if(err_arr.length>0){
+    $('<div class="alert alert-warning" id="err_msg_div">Variances ('+err_arr.length+'): [ '+err_arr_link.join(", ")+' ]</div>')
+    .insertBefore( "#update_stock_accuracy_form" );
+    }else{
+      $("#err_msg_div").remove();
+    }
+  }
+})
+//end of stackaccuracy
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Goods Receipt</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/gr" id="filter_gr">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ASN No.
+                      </label>
+                      <input type="text" class="form-control" name="ASNNo" value="{{ASNNo_inp}}">
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment No.
+                    </label>
+                    <input type="text" class="form-control" name="ShipmentNo" value="{{ShipmentNo_inp}}">
+                  </div>
+                </div>
+                
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date From
+                    </label>
+                    <input type="date" class="form-control" name="paramDate1" value="{{paramdate1_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date to
+                    </label>
+                    <input type="date" class="form-control" name="paramDate2" value="{{paramDate2_inp}}">
+                    <input type="hidden" name="Status_inp" class="form-control" id="Status_inp" value="{{Status_inp}}">
+                  </div>
+                </div>
+                
+                
+              </div><!--end of row-->
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div><!--end of row-->
+                
+              
+            </div>
+             
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              
+              <div class="row">
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box success-status-box {{#if Status_inp}}{{#compare Status_inp "Planned"}}active{{/compare}}{{else}}active{{/if}}" data-id="Planned">
+                        <div class="status-box-header ">
+                            <h4>Planned</h4>
+                        </div>
+                        <div id="gr_planned_count" class="gr_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box primary-status-box {{#compare Status_inp "Goods Receipt"}}active{{/compare}}" data-id="Goods Receipt">
+                        <div class="status-box-header ">
+                            <h4>Goods Receipt</h4>
+                        </div>
+                        <div id="gr_goodsreceipt_count" class="gr_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box warning-status-box {{#compare Status_inp "Short Closed"}}active{{/compare}}" data-id="Short Closed">
+                        <div class="status-box-header">
+                            <h4>Short Closed</h4>
+                        </div>
+                        <div id="gr_shortclosed_count" class="gr_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box danger-status-box {{#compare Status_inp "Cancelled"}}active{{/compare}}" data-id="Cancelled">
+                        <div class="status-box-header">
+                            <h4>Cancelled</h4>
+                        </div>
+                        <div id="gr_cancelled_count" class="gr_count">0</div>
+                    </div>
+                  </div>
+              </div>
+
+
+
+              <a type="button" href="/gr/create" class="btn btn-success btn-sm" >
+              Create GR Plan
+              </a>
+              <table  class="table table-bordered table-hover table-responsive table-pagination" style="margin-top: 20px;">
+                <thead>
+                <tr>
+                  <th data-sortable="true">GR No</th>
+                  <th data-sortable="true">ASN No</th>
+                  <th data-sortable="true">Assigned Employee</th>
+                  <th data-sortable="true">ShipmentNo</th>
+                  <th data-sortable="true">From</th>
+                  <th data-sortable="true">To</th>
+                  <th data-sortable="true">GR Date</th>
+                  <th data-sortable="true">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each GR_hdr}}
+                    <tr>
+                      <td><a href="/gr/gr_dtl?GRNo={{GRNo}}">{{GRNo}}</a></td>
+                      <td>{{ASNNo}}</td>
+                      <td>{{AssignEmployee}}</td>
+                      <td>{{ShipmentNo}}</td>
+                      <td>{{#if DateTimeFrom}}{{dateFormat DateTimeFrom  "YYYY-MM-DD  h:mm A"}}{{/if}}</td>
+                      <td>{{#if DateTimeTo}}{{dateFormat DateTimeTo  "YYYY-MM-DD  h:mm A"}}{{/if}}</td>
+                      <td>{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}</td>   
+                      <td>{{Status}}</td>                       
+                    </tr>
+                  {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+

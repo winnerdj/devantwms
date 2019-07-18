@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <style>
+        body { font-family: Arial, Helvetica, sans-serif; font-size: 12px;}
+        #pageHeader table { font-size: 11px;}
+        .table td, .table th{border:1px solid black; padding:3px;spacing:0px; }
+        .table{width:100%; font-size: 11px;}
+        .table-head{font-size: 11px;}
+        .table td {text-align:center}
+        #subheader{font-size: 11px; text-align:left;}
+        .pagebreakexceptlast{page-break-after:always;}
+        .pagebreakexceptlast:last-child {page-break-after: avoid;}
+        .underline {border-bottom: black solid 1px; }
+        .tws{font-size: 11px;  }
+        table td {margin-right:30px;}
+        #divsaleorder{margin-bottom:30px;}
+        </style>
+    </head>
+    <body>
+        {{#each dispatchDetail}}
+            <div id="divsaleorder">
+                {{SalesOrderNo}}
+            </div>
+            <div class="row" style="display: table; margin-bottom:50px; width:90%;">
+                <div id="leftbox" style="display: table-cell; ">
+                    <div>
+                        {{tbl_ship_point.ShipPointName}}
+                    </div>
+                    <div>
+                        {{tbl_ship_point.Address1}}
+                    </div>
+                   
+                </div>
+                <div id="rightbox" style="display: table-cell;">
+                    
+                     <div style="text-align:right;">
+                        {{DRRefNo}}
+                    </div>
+                     <div style="text-align:right;">
+                        {{tbl_dispatch_hdr.tbl_outbound_hdr.DeliveryDate}}
+                    </div>
+                      <div style="text-align:right;">
+                        {{PONo}}
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <table style="text-align:left;" class="table-head">
+                {{#each tbl_dispatch_detail_items}}
+                    <tr>
+                       <td>{{tbl_pickplan_details.length}}</td>
+                       <td> PCS. </td>
+                       <td> {{tbl_item_master.ItemDescription}}</td>
+                    </tr>
+                {{/each}}
+                    <tr>
+                        <td>{{../sum}}</td>
+                    </tr>
+            </table>
+            
+
+
+            <table style="text-align:left;" class="table-head">
+                {{#each tbl_dispatch_detail_items}}
+                    {{#if @first}}
+                        <tr><th>Remarks:</th></tr>
+                    {{/if}}
+                   {{#each tbl_pickplan_details}} 
+                   {{#if @first}}
+                        {{#if  @../first}}
+                        <tr><th>SerialNo:</th><td>{{ItemCode}}</td>
+                            <td>{{SerialNo}}</td>
+                        {{else}}
+                        <tr><th></th><td>{{ItemCode}}</td>
+                            <td>{{SerialNo}}</td>
+                        {{/if}}
+                   {{else}}
+                        {{#if @last}}
+                            <td>{{SerialNo}}</td></tr>
+                        {{else}}
+                            {{#ifIsNthItem nth=4}}
+                                <td>{{SerialNo}}</td></tr><tr><th></th><td></td>
+                            {{else}}
+                                <td>{{SerialNo}}</td>
+                            {{/ifIsNthItem}}
+                            
+                        {{/if}}
+                        
+                   {{/if}}
+                   
+                   {{/each}}
+                {{/each}}
+            </table>
+        </div>
+             </div>
+            {{/each}}
+            
+            <div id="pageFooter"><span style="color: #444;">{{page}}</span>/<span>{{pages}}</span></div>
+    </body>
+</html>

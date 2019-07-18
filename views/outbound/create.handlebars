@@ -1,0 +1,88 @@
+<form method="post" action="/outbound/create" id="create_outbound_form">
+  <h4 class="filter-title">Create Outbound</h4>
+    <div class="row">
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment No
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control req" name="ShipmentNo">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Delivery Date.
+                    </label>
+                    <input type="date" class="form-control req" name="DeliveryDate">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Transaction Type
+                    </label>
+                    <select  class="form-control req" name="TransactionType">
+                      <option>SO</option>
+                      <option>STO</option>
+                      <option>Return to Principal</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      CustomerCode
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control getCustomerCodeBtn req" name="CustomerCode" data-toggle="modal" id="inp_customerCode" data-target="#customerCodeModal" readonly>
+                  </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <table class="table table-bordered customtable" id="item_tbl">
+        <thead>
+          <tr>
+            
+            <th>ItemCode</th>
+            
+            <th>Item Description</th>
+            <th>OrderUOM</th>
+            <th>OrderQty</th>
+            <th>ShipTo</th>
+            <th>Sales Order No</th>
+            <th>Purchase Order No</th>
+            <th></th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr  data-index="0">
+            
+            <td><input name="ItemCode[]" class="form-control getItemCodeBtn req" data-toggle="modal" id="inp_ItemCode_1" data-target="#itemCodeModal" readonly required></td>
+            <td></td>
+            <td><select name="OrderUOM[]" class="form-control req" value ="1" readonly ><option>PC</option></select></td>
+            <td><input name="OrderQty[]" type="number" class="form-control numonly req"  pattern="[0-9]+" ></td>
+            <td><input type="text" autocomplete="off" class="form-control getshippointCodeBtn req" name="ShipPointCode[]" data-toggle="modal" id="inp_shippointCode_1" data-target="#shippointCodeModal" readonly></td>
+            <td><input type="text" autocomplete="off" name="SalesOrderNo[]" class="form-control req" required></td>
+            <td><input type="text" autocomplete="off" name="PONo[]" class="form-control req" required></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button id="add_outbounditem_btn" class="btn btn-primary btn-sm">Add Item</button>
+                    <button type="submit" class="btn btn-success btn-sm submit_btn">
+                      <span>Save</span>
+                    </button>
+                  </div>
+                </div>
+  </div><!--end of row-->
+</form>
+
+<!--/customercode modal-->
+              
+              

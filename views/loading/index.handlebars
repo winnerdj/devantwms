@@ -1,0 +1,149 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Loading</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/loading" id="filter_loading">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Loading No  
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="DispatchNo" >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Dispatch No
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="DispatchNo" >
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      ODO No
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="ODONo" >
+                  </div>
+                </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment No
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="Shipment No" >
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date From
+                    </label>
+                    <input type="date" class="form-control" name="paramDate1" value="{{paramdate1_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date to
+                    </label>
+                    <input type="date" class="form-control" name="paramDate2" value="{{paramDate2_inp}}">
+                    <input type="hidden" name="Status" class="form-control" id="Status_inp" value="{{Status}}">
+                  </div>
+                </div>
+               
+             
+              </div><!--end of row-->
+               <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+                
+              </div><!--end of row--> 
+               </form>
+            </div>
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box success-status-box {{#if Status}}{{#compare Status "Planned"}}active{{/compare}}{{else}}active{{/if}}" data-id="Planned">
+                        <div class="status-box-header ">
+                            <h4>Planned</h4>
+                        </div>
+                        <div id="loading_planned_count" class="loading_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box primary-status-box {{#compare Status "Confirmed"}}active{{/compare}}" data-id="Confirmed">
+                        <div class="status-box-header ">
+                            <h4>Confirmed</h4>
+                        </div>
+                        <div id="loading_confirmed_count" class="loading_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box warning-status-box {{#compare Status "Short Closed"}}active{{/compare}}" data-id="Short Closed">
+                        <div class="status-box-header">
+                            <h4>Short Closed</h4>
+                        </div>
+                        <div id="loading_shortclosed_count" class="loading_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box danger-status-box {{#compare Status "Cancelled"}}active{{/compare}}" data-id="Cancelled">
+                        <div class="status-box-header">
+                            <h4>Cancelled</h4>
+                        </div>
+                        <div id="loading_cancelled_count" class="loading_count">0</div>
+                    </div>
+                  </div>
+              </div>
+
+               <a type="button" href="/loading/create" class="btn btn-success btn-sm" >
+              Create LoadingPlan
+              </a>
+              <table  class="table table-bordered table-hover table-responsive table-pagination" style="margin-top: 20px;">
+                <thead>
+                <tr>
+                  <th data-sortable="true">Loading No</th>
+                  <th data-sortable="true">Dispatch No</th>
+                  <th data-sortable="true">Shipment No</th>
+                  <th data-sortable="true">ODO No</th>
+                  <th data-sortable="true">Date Created</th>
+                  <th data-sortable="true">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each dispatch}}
+                  <tr>
+                    <td><a href="/loading/loading_dtl?LoadingNo={{LoadingNo}}">{{LoadingNo}}</a></td>
+                    <td>{{DispatchNo}}</a></td>
+                    <td>{{ShipmentNo}}</td>
+                    <td>{{ODONo}}</td>
+                    <td>{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}</td>
+                    <td>{{Status}}</td>                       
+                  </tr>
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+

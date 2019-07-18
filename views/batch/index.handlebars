@@ -1,0 +1,136 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Batch</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/item">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Batch
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="Batch" value="{{Batch_inp}}" >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Batch Description
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="BatchDescription" value="{{BatchDescription_inp}}" >
+                  </div>
+                </div>
+                
+              </div><!--end of row-->
+              
+                <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div><!--end of row-->
+                
+              
+            </div>
+            
+       
+            <!-- /.box-header -->
+            <div class="box-body">
+              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addBatchModal"  >
+               Add Batch
+            </button>
+              <table  class="table table-bordered table-hover table-responsive table-pagination"  style="margin-top: 20px;">
+                <thead>
+                <tr>
+                  <th data-sortable="true">Batch</th>
+                  <th data-sortable="true">Batch Description</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each Batchlist}}
+                  <tr>
+                    <td>{{Batch}}</td>
+                    <td>{{BatchDescription}}</td>
+                    <td><a href="#" data-toggle="modal" data-target="#updateBatchModal" class="updatebatch_btn" data-id="{{ID}}"><span class="glyphicon glyphicon-pencil " aria-hidden="true" style="color:green;"></span></a></td>                       
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+
+<!--add item modal-->
+<div class="modal fade" id="addBatchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg " role="document">
+    <form method="post" action="/batch/create">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Add Batch</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+                <label>Batch</label>
+                <input type="text" autocomplete="off" class="form-control" placeholder="Batch" name="Batch">
+          </div>
+          <div class="form-group">
+                <label>Batch Description</label>
+                <input type="text" autocomplete="off" class="form-control" placeholder="Batch Description" name="BatchDescription">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--/add item modal-->
+
+
+<!--update item modal-->
+<div class="modal fade" id="updateBatchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg " role="document">
+    <form method="post" action="/batch/update">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Update Item</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Batch</label>
+                <input type="text" autocomplete="off" class="form-control" placeholder="Batch" name="Batch" id="Batch_inp">
+                <input type="text" autocomplete="off" class="form-control"  name="ID" id="ID_inp">
+            </div>
+            <div class="form-group">
+                  <label>Batch Description</label>
+                  <input type="text" autocomplete="off" class="form-control" placeholder="Batch Description" name="BatchDescription" id="BatchDescription_inp">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--/update item modal-->

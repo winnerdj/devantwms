@@ -1,0 +1,165 @@
+<form id="update_loading_form" method="POST" action="/loading/loading_dtl">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Loading Detail</h3>
+            </div>{{#each loadingDetails}}
+             <div id="search_div">
+              <div class="row">
+                <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Loading No.
+                      </label>
+                      <input type="hidden" name="LoadingNo" value="{{LoadingNo}}"  class="form-control req">
+                      <input type="text" autocomplete="off" value="{{LoadingNo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Dispatch No.
+                      </label>
+                      <input type="hidden" name="DispatchNo" value="{{DispatchNo}}"  class="form-control req">
+                      <input type="text" autocomplete="off" value="{{DispatchNo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Shipment No.
+                      </label>
+                      <input type="hidden" name="ShipmentNo" value="{{ShipmentNo}}" class="form-control req">
+                       <input type="hidden" name="UUID" value="{{UUID}}" class="form-control">
+                      <input type="text" autocomplete="off" value="{{ShipmentNo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      ODO No
+                    </label>
+                    <input type="text" autocomplete="off" name="ODONo" value="{{ODONo}}" class="form-control req" readonly>
+                   
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Date Created
+                    </label>
+                    <input type="text" autocomplete="off" value="{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}" class="form-control req" readonly>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Status
+                    </label>
+                    <input type="text" autocomplete="off" name="Status" value="{{Status}}" class="form-control req" readonly>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Plate No
+                    </label>
+                    <input type="text" autocomplete="off" name="PlateNo" value="{{PlateNo}}" class="form-control req" {{#compareor Status "Short Closed,Confirmed,Cancelled"}}readonly{{/compareor}}>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Vehicle Type
+                    </label>
+                    <input type="text" autocomplete="off" name="VehicleType" value="{{VehicleType}}" class="form-control req" {{#compareor Status "Short Closed,Confirmed,Cancelled"}}readonly{{/compareor}}>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Dock No
+                    </label>
+                    <input type="text" autocomplete="off" name="DockNo" value="{{DockNo}}" class="form-control req" {{#compareor Status "Short Closed,Confirmed,Cancelled"}}readonly{{/compareor}}>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Person
+                    </label>
+                    <input type="text" autocomplete="off" name="Person" value="{{Person}}" class="form-control req" {{#compareor Status "Short Closed,Confirmed,Cancelled"}}readonly{{/compareor}}>
+                  </div>
+                </div>
+              </div><!--end of row-->
+            </div>   
+    <div class="row" style="padding:20px;">
+    <div class="col-12 col-md-12" >
+    {{#compare Status "Planned"}}
+            {{#if tbl_loading_details}}
+            <table class="table table-bordered table-pagination" id="loading_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th data-events="inputEvents" data-field="selling"></th>
+                      <th>Ship-To-Code</th>
+                      <th>Ship-To-Name</th>
+                      <th>Item Code</th>
+                      <th>Item Description</th>
+                      <th>Serial No</th>
+                      <th>Batch</th>
+                  </tr>
+              </thead>
+              {{#each tbl_loading_details}}
+                <tr  id="{{ID}}">
+                    <td><input type="checkbox" checked name="check" id="{{ID}}"></td>
+                    <td>{{ShipPointCode}}</td>
+                    <td>{{tbl_ship_point.ShipPointName}}</td>
+                    <td>{{ItemCode}}</td>
+                    <td>{{tbl_item_master.ItemDescription}}</td>
+                    <td>{{SerialNo}}</td>
+                    <td>{{Batch}}</td>
+                </tr>
+              {{/each}}
+            </table>
+            {{/if}}
+            
+
+    <input type="hidden" name="submit_action" id="submit_action" value="Amend">
+    <input type="submit" class="btn btn-danger submit_btn" value="Cancel">
+    <!--<input type="submit" class="btn btn-warning submit_btn" value="Short Close">-->
+    <input type="submit" class="btn btn-success submit_btn" value="Confirm">
+    
+    {{else}}
+      {{#if tbl_loading_details}}
+            <table class="table table-bordered table-pagination" id="loading_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th >Ship-To-Code</th>
+                      <th>Ship-To-Name</th>
+                      <th>Item Code</th>
+                      <th>Item Description</th>
+                      <th>Serial No</th>
+                      <th>Batch</th>
+                      <th>Status</th>
+                  </tr>
+              </thead>
+              {{#each tbl_loading_details}}
+                <tr  id="{{ID}}">
+                    <td>{{ShipPointCode}}</td>
+                    <td>{{tbl_ship_point.ShipPointName}}</td>
+                    <td>{{ItemCode}}</td>
+                    <td>{{tbl_item_master.ItemDescription}}</td>
+                    <td>{{SerialNo}}</td>
+                    <td>{{Batch}}</td>
+                    <td>{{Status}}</td>
+                </tr>
+              {{/each}}
+            </table>
+            {{/if}}
+            <input type="submit" class="btn btn-success submit_btn" value="Generate Loadlist">
+    {{/compare}}
+    </div>
+</div>
+<br />
+{{/each}}
+</form>

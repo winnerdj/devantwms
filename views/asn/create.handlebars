@@ -1,0 +1,72 @@
+<form method="post" action="/asn/create"   id="createasn">
+  <h4 class="filter-title">Create ASN</h4>
+    <div class="row">
+      <div class="col-12 col-md-2">
+                    <label class="control-sidebar-subheading">
+                      Shipment No.
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control req" name="ShipmentNo">
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment Date
+                    </label>
+                    <input type="date" class="form-control req" name="PrimaryRefDocDate">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Transaction Type
+                    </label>
+                    <select  class="form-control req" name="TransactionType">
+                      <option>PO</option>
+                      <option>STO</option>
+                      <option>Return</option>
+                      <option>Others</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      CustomerCode
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control getCustomerCodeBtn req" name="CustomerCode" data-toggle="modal" id="inp_customerCode" data-target="#customerCodeModal" readonly>
+                  </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <table class="table table-bordered customtable" id="item_tbl">
+        <thead>
+          <tr>
+            <th>ItemCode</th>
+            <th>Item Description</th>
+            <th>SerialNo</th>
+            <th>Batch</th>
+            <th></th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr data-index="1"><td><input name="OrderQty[]" type="hidden" class="form-control"  value="1" required><input type="hidden" name="OrderUOM[]" value="PC" ><input name="ItemCode[]" class="form-control getItemCodeBtn req" data-toggle="modal" id="inp_ItemCode_1" data-target="#itemCodeModal" readonly></td><td class="ItemDesc" id="ItemDesc_1"></td><td><input name="SerialNo[]" class="form-control" required></td><td><select name="Batch[]" class="form-control"><option></option><option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option></select></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+        <div class="col-12 col-md-3">
+          <div class="form-group">
+            <button id="add_item_btn" class="btn btn-primary btn-sm"><span class="fa fa-fw fa-plus" aria-hidden="true"> </span>Add Item</button>
+            <button type="submit" class="btn btn-success btn-sm submit_btn btn-flat">
+              <span class="fa fa-fw fa-save" aria-hidden="true"> </span> <span>Save</span>
+            </button>
+          </div>
+        </div>
+  </div><!--end of row-->
+</form>
+
+<!--/customercode modal-->
+              
+              

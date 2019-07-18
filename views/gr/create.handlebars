@@ -1,0 +1,94 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">CREATE GR Plan</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/gr/create">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ASN No.
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="ASNNo" value="{{ASNNo_inp}}">
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      ShipmentNo
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="ShipmentNo" value="{{ShipmentNo_inp}}">
+                  </div>
+                </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date From
+                    </label>
+                    <input type="date" class="form-control" name="paramDate1" value="{{paramdate1_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date to
+                    </label>
+                    <input type="date" class="form-control" name="paramDate2" value="{{paramDate2_inp}}">
+                  </div>
+                </div>
+              </div><!--end of row-->
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div><!--end of row-->
+            </div>
+            
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="" class="table table-bordered table-hover table-responsive table-pagination ">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th data-sortable="true">ASNNo</th>
+                  <th data-sortable="true">Shipment No</th>
+                  <th data-sortable="true">Shipment Date</th>
+                  <th data-sortable="true">Transaction Type</th>
+                  <th data-sortable="true">Customer</th>
+                  <th data-sortable="true">Date Created</th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each ASN_hdr}}
+                  <tr>
+                    <td><button class="btn btn-primary btn-sm create_btn">Create GR Plan</button></td>
+                    <td data-id="{{ASNNo}}">{{ASNNo}}</td>
+                    <td data-id="{{ShipmentNo}}">{{ShipmentNo}}</td>
+                    <td data-id="{{UUID}}">{{PrimaryRefDocDate}}</td>
+                    <td>{{TransactionType}}</td>
+                    <td>{{CustomerCode}}</td>
+                    <td>{{dateFormat ASNDateTime  "YYYY-MM-DD  h:mm A"}}</td>                    
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+<form method="POST" id="create_gr_form" action="/gr/create">
+  <input type="hidden" name="UUID" id="UUID_inp">
+</form>

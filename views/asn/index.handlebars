@@ -1,0 +1,183 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">ASN</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/asn" id="filter_asn">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ASN No.
+                      </label>
+                      <input type="text" class="form-control" name="ASNNo" value="{{ASNNo_inp}}" autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment No
+                    </label>
+                    <input type="text"  autocomplete="off" class="form-control" name="ShipmentNo" value="{{ShipmentNo_inp}}">
+                  </div>
+                </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date From
+                    </label>
+                    <input type="date" class="form-control" name="paramDate1" value="{{paramdate1_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date to
+                    </label>
+                    <input type="date" class="form-control" name="paramDate2" value="{{paramDate2_inp}}">
+                    <input type="hidden" name="Status" id="Status_inp" class="form-control" value="{{Status_inp}}">
+                  </div>
+                </div>
+              </div><!--end of row-->
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+              </div><!--end of row-->
+              </form>
+            </div>
+            
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box success-status-box {{#if Status_inp}}{{#compare Status_inp "Fresh"}}active{{/compare}}{{else}}active{{/if}}" data-id="Fresh">
+                        <div class="status-box-header ">
+                            <h4>Fresh</h4>
+                        </div>
+                        <div id="asn_fresh_count" class="asn_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box primary-status-box {{#compare Status_inp "Confirmed"}}active{{/compare}}" data-id="Confirmed">
+                        <div class="status-box-header ">
+                            <h4>Confirmed</h4>
+                        </div>
+                        <div id="asn_confirmed_count" class="asn_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box warning-status-box {{#compare Status_inp "Under Amendment"}}active{{/compare}}" data-id="Under Amendment">
+                        <div class="status-box-header ">
+                            <h4>Under Amendment</h4>
+                        </div>
+                        <div id="asn_amendment_count" class="asn_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box danger-status-box {{#compare Status_inp "Cancelled"}}active{{/compare}}" data-id="Cancelled">
+                        <div class="status-box-header">
+                            <h4>Cancelled</h4>
+                        </div>
+                        <div id="asn_cancelled_count" class="asn_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box secondary-status-box {{#compare Status_inp "Closed"}}active{{/compare}}" data-id="Closed">
+                        <div class="status-box-header">
+                            <h4>Closed</h4>
+                        </div>
+                        <div id="asn_closed_count" class="asn_count">0</div>
+                    </div>
+                  </div>
+              </div>
+
+              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadModal"  >
+              <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload
+            </button>
+
+            
+              <a type="button" href="/asn/create" class="btn btn-success btn-sm" >
+              Create ASN
+              </a>
+              <table id="" class="table table-bordered table-hover table-responsive table-pagination "  style="margin-top: 20px;">
+                <thead>
+                <tr>
+                  <th data-sortable="true">ASNNo</th>
+                  <th data-sortable="true">Shipment No</th>
+                  <th data-sortable="true">Shipment Date</th>
+                  <th data-sortable="true">Transaction Type</th>
+                  <th data-sortable="true">Customer</th>
+                  <th data-sortable="true">Status</th>
+                  <th data-sortable="true">Date Created</th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each ASN_hdr}}
+                  <tr>
+                    <td><a href="/asn/asn_dtl?UUID={{UUID}}">{{ASNNo}}</a></td>
+                    <td>{{ShipmentNo}}</td>
+                    <td>{{PrimaryRefDocDate}}</td>
+                    <td>{{TransactionType}}</td>
+                    <td>{{CustomerCode}}</td>
+                    <td>{{Status}}</td>
+                    <td>{{dateFormat ASNDateTime  "YYYY-MM-DD  h:mm A"}}</td>                    
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+<!--upload modal-->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="/asn/post_upload" method="post" enctype="multipart/form-data">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">UPLOAD ASN</h5>
+        
+      </div>
+      <div class="modal-body">
+        
+          <div class="input-group">
+            <label for="date">Upload ASN</label>
+            <input type="file" name="upload_asn" class="form-control" placeholder="Date" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+          </div>
+          <div class="input-group">
+            <label for="date">Transaction Type</label>
+            <select class="form-control" name="TransactionType">
+              <option>PO</option>
+              <option>STO</option>
+              <option>Return</option>
+              <option>Others</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+<!--/upload modal-->
+
+

@@ -1,0 +1,98 @@
+<form method="post" action="/asn/create">
+  <h4 class="filter-title">Create ASN</h4>
+    <div class="row">
+      <div class="col-12 col-md-2">
+                    <label class="control-sidebar-subheading">
+                      Primary Ref Doc.
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="ASNPrimaryRefDocNo">
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Primary Ref Doc Date
+                    </label>
+                    <input type="date" class="form-control" name="PrimaryRefDocDate">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Transaction Type
+                    </label>
+                    <select  class="form-control" name="TransactionType">
+                      <option>PO</option>
+                      <option>STO</option>
+                      <option>Return</option>
+                      <option>Others</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      CustomerCode
+                    </label>
+                    <input type="text"  autocomplete="off" class="form-control" name="CustomerCode" data-toggle="modal" data-target="#customerCodeModal">
+                  </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <table class="table table-bordered customtable" id="item_tbl">
+        <thead>
+          <tr>
+            <th>ItemCode</th>
+            <th>OrderUOM</th>
+            <th>OrderQty</th>
+            <th>SerialNo</th>
+            <th>Batch</th>
+            <th></th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr><td><input name="ItemCode[]" class="form-control" required></td><td><select name="OrderUOM[]" class="form-control" required><option>PC</option></select></td><td><input name="OrderQty[]" type="number" class="form-control" required></td><td><input name="SerialNo[]" class="form-control" required></td><td><select name="Batch[]" class="form-control"  required><option>Green</option><option>Red</option><option>Orange</option></select></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button id="add_item_btn" class="btn btn-primary btn-sm">Add Item</button>
+                    <button type="submit" class="btn btn-success btn-sm">
+                      <span>Save</span>
+                    </button>
+                  </div>
+                </div>
+  </div><!--end of row-->
+</form>
+<!--customercode modal-->
+<div class="modal fade" id="customerCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="/asn/post_upload" method="post" enctype="multipart/form-data">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">UPLOAD ASN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+          <div class="input-group">
+            <label for="date">Upload ASN</label>
+            <input type="file" name="upload_asn" class="form-control" placeholder="Date">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+<!--/customercode modal-->
+              
+              

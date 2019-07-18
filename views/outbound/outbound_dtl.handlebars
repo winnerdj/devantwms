@@ -1,0 +1,165 @@
+<form id="update_outbound_form" method="POST" action="/outbound/outbound_dtl">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">ODO Detail</h3>
+            </div>
+            {{#each outbound_hdr}}
+             <div id="search_div">
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ODO No.
+                      </label>
+                      <input type="hidden" name="ODONo" value="{{ODONo}}" class="form-control req">
+                      <input type="hidden" name="UUID" value="{{UUID}}" class="form-control req">
+                      <input type="text" value="{{ODONo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Delivery Date
+                      </label>
+                      <input type="date" name="DeliveryDate" value="{{DeliveryDate}}" class="form-control req" {{#compareor Status "Confirmed,Cancelled,Closed" }}readonly{{/compareor}}  >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Shipment No
+                      </label>
+                      <input type="text" autocomplete="off" name="ShipmentNo" value="{{ShipmentNo}}" class="form-control req" {{#compareor Status "Confirmed,Cancelled,Closed" }}readonly{{/compareor}}>
+                    </div>
+                  </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Transaction Type
+                    </label>
+                    {{#compareor Status "Fresh,Under Amendment" }}
+                    <select  class="form-control" name="TransactionType" class="form-control">
+                      <option {{#compare TransactionType "SO" }} selected {{/compare}}>SO</option>
+                      <option {{#compare TransactionType "STO" }} selected {{/compare}}>STO</option>
+                      <option {{#compare TransactionType "Return to Principal" }} selected {{/compare}}>Return to Principal</option>
+                    </select>
+                    {{else}}
+                    <input type="text" autocomplete="off" readonly value="{{TransactionType}}" class="form-control" >
+                    {{/compareor}}
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Customer Code
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control getCustomerCodeBtn req" value="{{CustomerCode}}" name="CustomerCode" {{#compareor Status "Fresh,Under Amendment" }}data-toggle="modal"{{/compareor}} id="inp_customerCode" data-target="#customerCodeModal" readonly="">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date Created
+                    </label>
+                    <input type="text" autocomplete="off" value="{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}" class="form-control" disabled>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Status
+                    </label>
+                    <input type="text" disabled value="{{Status}}" class="form-control">
+                  </div>
+                </div>
+              </div><!--end of row-->
+            </div>
+
+            
+    
+
+ <div class="row" style="padding:20px;">
+    <div class="col-12 col-md-12" >
+      {{#compareor Status "Fresh,Under Amendment"}}
+      <button id="add_row_edit_item" class="btn btn-primary">Add Item</button> 
+      {{/compareor}}
+        <table class="table table-bordered table-pagination" id="outbound_edit_item_tbl">
+            
+            {{#compareor Status "Fresh,Under Amendment" }}
+            <thead>
+                <tr>
+                    <th data-field="id">Item Code</th>
+                    <th data-field="itemDescription">Item Description</th>
+                    <th data-field='UOM'>UOM</th>
+                    <th data-field='QTY'>QTY</th>
+                    <th data-field='ShipTo'>Ship To</th>
+                    <th data-field='SalesOrderNo'>Sales Order No.</th>
+                    <th data-field='PONo'>Purchase Order No.</th>
+                    <th data-field="ops" data-formatter="operateFormatter" data-events="operateEvents"></th>
+                </tr>
+            </thead>
+            {{#each tbl_outbound_details}}
+            
+            <tr>
+                <td><input type="hidden" value="{{ID}}" class="form-control" disabled><input type="hidden" name="ID[]" value="{{ID}}" class="form-control"><input type="text" name="ItemCode[]" value="{{ItemCode}}" class="form-control getItemCodeBtn" data-toggle="modal" id="inp_ItemCode_1" data-target="#itemCodeModal" readonly required></td>
+                <td>{{tbl_item_master.ItemDescription}}</td>
+                <td><select name="OrderUOM[]" class="form-control" required><option>PC</option></select></td>
+                <td><input type="number" name="OrderQty[]" value="{{OrderQty}}" class="form-control" required></td>
+                <td><input type="text" autocomplete="off" name="ShipPointCode[]" value="{{ShipPointCode}}" class="form-control getshippointCodeBtn req"  data-toggle="modal" id="inp_shippointCode_{{inc @index}}" data-target="#shippointCodeModal" required readonly></td>
+                <td><input type="text" autocomplete="off" name="SalesOrderNo[]" value="{{SalesOrderNo}}" class="form-control  req"  id="inp_SalesOrderNo_{{inc @index}}" required readonly></td>
+                <td><input type="text" autocomplete="off" name="PONo[]" value="{{PONo}}" class="form-control  req"  id="inp_PONo_{{inc @index}}" required readonly></td>
+                <td><button class="btn btn-xs btn-danger item_remove_btn remove">x</button><a class="remove" href="javascript:void(0)" title="Remove"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            {{/each}}
+            
+            {{else}}
+            <thead>
+                <tr>
+                    <th data-field="id">Item Code</th>
+                    <th data-field="itemDescription">Item Description</th>
+                    <th data-field='UOM'>UOM</th>
+                    <th data-field='QTY'>QTY</th>
+                    <th data-field='ShipTo'>Ship To</th>
+                    <th data-field='SalesOrderNo'>Sales Order No</th>
+                    <th data-field='PONo'>Purchase Order No.</th>
+                </tr>
+            </thead>
+            {{#each tbl_outbound_details}}
+            
+            <tr>
+                <td>{{ItemCode}}</td>
+                <td>{{tbl_item_master.ItemDescription}}</td>
+                <td>PCS</td>
+                <td>{{OrderQty}}</td>
+                <td>{{ShipPointCode}}</td>
+                <td>{{SalesOrderNo}}</td>
+                <td>{{PONo}}</td>
+            </tr>
+            {{/each}}
+            {{/compareor}}
+        </table>
+        <input type="hidden" name="submit_action" id="submit_action" value="Amend">  
+    
+    {{#compare Status "Fresh"}}
+      <input type="submit" class="btn btn-warning submit_btn" value="Confirm"> 
+      <input type="submit" class="btn btn-danger submit_btn" value="Cancel">
+      <input type="submit" class="btn btn-success submit_btn pull-right" value="Confirm and Create Pick Plan">
+    {{/compare}}
+    {{#compare Status "Under Amendment"}}
+        <input type="submit" class="btn btn-warning submit_btn" value="Confirm"> 
+        <input type="submit" class="btn btn-success submit_btn pull-right" value="Confirm and Create Pick Plan">
+    {{/compare}}
+    {{#compare Status "Confirmed"}}
+    <input type="submit" class="btn btn-secondary submit_btn" value="Amend">
+    <input type="submit" class="btn btn-success submit_btn pull-right" value="Confirm and Create Pick Plan">
+    {{/compare}}
+    </div>
+</div>
+<br />
+{{/each}}
+</form>
+
+
+

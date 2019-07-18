@@ -1,0 +1,99 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Batch & UID Correction Correction</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/batch_uid_correction">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Item Code
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="ItemCode" value="{{ItemCode}}">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Serial No
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="SerialNo" value="{{SerialNo}}">
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date From
+                    </label>
+                    <input type="date" class="form-control" name="paramDate1" value="{{paramdate1_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date to
+                    </label>
+                    <input type="date" class="form-control" name="paramDate2" value="{{paramDate2_inp}}">
+                  </div>
+                </div>
+                
+                
+              </div><!--end of row-->
+
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> Search</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div><!--end of row-->
+                
+              
+            </div>
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <a type="button" href="/batch_uid_correction/create" class="btn btn-success btn-sm" >Create Batch & UID Correction</a>
+              <table  class="table table-bordered table-hover table-responsive table-pagination" style="margin-top: 20px;">
+                
+                <thead>
+                <tr>
+                  <th data-sortable="true">ItemCode</th>
+                  <th data-sortable="true">SerialNo</th>
+                  <th data-sortable="true">Batch From</th>
+                  <th data-sortable="true">Batch To</th>
+                  <th data-sortable="true">UID From</th>
+                  <th data-sortable="true">UID To</th>
+                  <th data-sortable="true">Created By</th>
+                  <th data-sortable="true">Created Date Time</th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each batch_uid_correction}}
+                  <tr>
+                    <td>{{ItemCode}}</td>
+                    <td>{{SerialNo}}</td>
+                    <td>{{BatchFrom}}</td>
+                    <td>{{BatchTo}}</td>
+                    <td>{{UIDFrom}}</td>
+                    <td>{{UIDTo}}</td>      
+                    <td>{{tbl_user.FirstName}} {{tbl_user.LastName}}</td> 
+                    <td>{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}</td>           
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+

@@ -1,0 +1,163 @@
+<form id="update_gr_form" method="POST" action="/gr/gr_dtl">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">GR Detail</h3>
+            </div>
+            {{#each GR_hdr}}
+             <div id="search_div">
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        GR No.
+                      </label>
+                      <input type="hidden" name="GRNo" value="{{GRNo}}" id="GRNoInp" class="form-control req">
+                      <input type="text" value="{{GRNo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ASN No.
+                      </label>
+                      <input type="hidden" name="ASNNo" value="{{ASNNo}}" class="form-control req">
+                      <input type="text" value="{{ASNNo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment No
+                    </label>
+                    <input type="text" name="ShipmentNo" value="{{ShipmentNo}}" class="form-control req" readonly>
+                    <input type="hidden" name="UUID" value="{{UUID}}" class="form-control" >
+                  </div>
+                </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Assigned Employee
+                    </label>
+                     <!--input type="text" name="AssignedEmployee" value="{{AssignedEmployee}}" class="form-control req">-->
+                     <input type="text" class="form-control getEmployeeBtn req" name="AssignEmployee" value="{{AssignEmployee}}"  {{#compare Status "Planned" }} data-toggle="modal" {{/compare}} id="inp_ID" data-target="#employeeModal" readonly>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        GR Date
+                    </label>
+                    <input type="text"  value="{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}" class="form-control req" readonly>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Status
+                    </label>
+                    <input type="text" name="Status" value="{{Status}}" class="form-control req" readonly>
+                  </div>
+                </div>
+              </div><!--end of row-->
+            </div>
+
+            
+    
+ <div class="row" style="padding:20px;">
+    <div class="col-12 col-md-12" >
+        
+            {{#if tbl_gr_details}}
+            <table class="table table-bordered" id="asn_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th>Item Code</th>
+                      <th>Serial No</th>
+                      <th>Qty</th>
+                      <th>UOM</th>
+                      <!--<th>Location</th>-->
+                      <th>UID</th>
+                      <th>Batch</th>
+                      <th>Stock Status</th>
+                  </tr>
+              </thead>
+              {{#each tbl_gr_details}}
+                <tr>
+                    <td>{{ItemCode}}</td>
+                    <td>{{SerialNo}}</td>
+                    <td>{{Qty}}</td>
+                    <td>PCS</td>
+                    <td>{{UID}}</td>
+                    <td>{{Batch}}</td>
+                    <td>{{StockStatus}}</td>
+                </tr>
+              {{/each}}
+            </table>
+            {{else}}
+              <table class="table">
+                
+              {{#each tbl_asn_hdr.tbl_asn_details}}
+              
+              <div id="batch_{{inc @index}}" class="div_container" >
+                <div class="row" id="batchhead_{{inc @index}}" >
+                  
+                  
+                    <div class="col-12 col-md-2">
+                      <label>ItemCode</label>
+                      <input type="text"  value="{{ItemCode}}"  id="itemcode_batch_{{inc @index}}" name="ItemCode_pa[]" class="ItemCode_head form-control" readonly />
+                    </div>
+                    
+                    <div class="col-12 col-md-2">
+                      <label>UID</label>
+                      <input type="text"  class="UID_head form-control" id="uid_batch_{{inc @index}}" data-id= "batch_{{inc @index}}" name="UID_pa[]" required />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>Batch</label>
+                      <select  class="batch_head form-control " id="batch_batch_{{inc @index}}" data-id= "batch_{{inc @index}}" name="Batch_pa[]"  required><option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option></select>
+                    </div>
+                    
+                    <div class="col-12 col-md-2">
+                      <div class="col-lg-12 col-xm-2"> 
+                        <label>Add Good Items</label>
+                        <div class="input-group"> 
+                          <input type="number"  class="count_head form-control" id="count_batch_{{inc @index}}" required placeholder="#" value={{itemCount}} />
+                          <span class="input-group-btn"> 
+                            <button class="btn btn-primary generate_uid_btn btn-sm" data-id="batch_{{inc @index}}"><i class="fa fa-fw fa-plus-square"></i></button>  
+                          </span> 
+                        </div> 
+                      </div>
+                    </div>
+                    
+                </div>
+                  <div id="good_batch_{{inc @index}}" ></div>
+                        </BR>
+                        <button class="btn btn-primary form-control add_dmgitem_btn" data-id="{{inc @index}}">Add damage</button>
+                        <br>
+                        <button class="btn btn-success form-control add_gooditem_btn" data-id="{{inc @index}}">New UID</button>
+                    </BR>
+              </div>
+
+                  
+                  <div id="dmg_batch__list{{inc @index}}"></div>
+              </div>
+              {{/each}}
+              </table>
+            {{/if}}
+            
+       
+        <input type="hidden" name="submit_action" id="submit_action" value="Amend">
+    {{#compare Status "Planned"}}
+    <input type="submit" class="btn btn-warning submit_btn" value="Short Close"> 
+    <input type="submit" class="btn btn-danger submit_btn" value="Cancel">
+    <input type="submit" class="btn btn-success submit_btn" value="Goods Receipt and Putaway">
+    {{/compare}}
+    </div>
+    
+    
+</div>
+    
+<br />
+{{/each}}
+</form>

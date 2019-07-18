@@ -1,0 +1,289 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">ShipPoint</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/shippoint">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Ship Point Code
+                      </label>
+                      <input type="text" class="form-control" name="ShipPointCode" value="{{ShipPointCode}}" >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Ship Point Name
+                    </label>
+                    <input type="text" class="form-control" name="ShipPointName" value="{{ShipPointName_inp}}">
+                  </div>
+                </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Dealer
+                    </label>
+                     <input type="text" class="form-control" name="Dealer" value="{{Dealer}}" >
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Status
+                    </label>
+                    <select name="Status" class="form-control">
+                        <option></option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
+                  </div>
+                </div>
+                
+              </div><!--end of row-->
+              
+                <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div><!--end of row-->
+            </div>
+            
+       
+            <!-- /.box-header -->
+            <div class="box-body">
+              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addShippointModal">
+               Add ShipPoint
+              </button>
+              <table  class="table table-bordered table-hover table-responsive table-pagination"  style="margin-top: 20px;">
+                <thead>
+                <tr>
+                  <th data-sortable="true">Ship Point Code</th>
+                  <th data-sortable="true">ShipPointName</th>
+                  <th data-sortable="true">Dealer</th>
+                  <th data-sortable="true">Address1</th>
+                  <th data-sortable="true">Address2</th>
+                  <th data-sortable="true">Address3</th>
+                  <th data-sortable="true">PostalCode</th>
+                  <th data-sortable="true">City</th>
+                  <th data-sortable="true">State</th>
+                  <th data-sortable="true">Country</th>
+                  <th data-sortable="true">ContactPerson</th>
+                  <th data-sortable="true">Phone1</th>
+                  <th data-sortable="true">Phone2</th>
+                  <th data-sortable="true">Fax</th>
+                  <th data-sortable="true">Email</th>
+                  <th data-sortable="true">Url</th>
+                  <th data-sortable="true">Status</th>
+                  <th data-sortable="true">Warehouse Code</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each shipppoints}}
+                  <tr>
+                    <td id="ShipPointCode_td">{{ShipPointCode}}</td>
+                    <td id="ShipPointName_td">{{ShipPointName}}</td>
+                    <td id="Dealer_td">{{Dealer}}</td>
+                    <td id="Address1_td">{{Address1}}</td>
+                    <td id="Address2_td">{{Address2}}</td>
+                    <td id="Address3_td">{{Address3}}</td>
+                    <td id="PostalCode_td">{{PostalCode}}</td>
+                    <td id="City_td">{{City}}</td>
+                    <td id="State_td">{{State}}</td>
+                    <td id="Country_td">{{Country}}</td>
+                    <td id="ContactPerson_td">{{ContactPerson}}</td>
+                    <td id="Phone1_td">{{Phone1}}</td>
+                    <td id="Phone2_td">{{Phone2}}</td>
+                    <td id="Fax_td">{{Fax}}</td>
+                    <td id="Email_td">{{Email}}</td>
+                    <td id="Url_td">{{Url}}</td>
+                    <td id="Status_td">{{Status}}</td>
+                    <td id="WarehouseCode_td">{{WarehouseCode}}</td>
+                    <td><a href="#" data-toggle="modal" data-target="#updateShippointModal" class="updateShippointModal_btn" data-id="{{ShipPointCode}}"><span class="glyphicon glyphicon-pencil " aria-hidden="true" style="color:green;"></span></a></td>                       
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+
+<!--add location modal-->
+<div class="modal fade" id="addShippointModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <form method="post" action="/shippoint/create">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Add ShipPoint</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Ship Point Code</label>
+            <input type="text" class="form-control" placeholder="Ship Point Code" name="ShipPointCode">
+          </div>
+          <div class="form-group">
+            <label>Ship Point</label>
+            <input type="text" class="form-control" placeholder="Ship Point" name="ShipPointName">
+          </div>
+          <div class="form-group">
+            <label>Dealer</label>
+            <input type="text" class="form-control" placeholder="Dealer" name="Dealer">
+          </div>
+          <div class="form-group">
+            <label>Address1</label>
+            <input type="text" class="form-control" placeholder="Address1" name="Address1">
+          </div>
+          <div class="form-group">
+            <label>Address2</label>
+            <input type="text" class="form-control" placeholder="Address2" name="Address2">
+          </div>
+          <div class="form-group">
+            <label>Address3</label>
+            <input type="text" class="form-control" placeholder="Address3" name="Address3">
+          </div>
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input type="text" class="form-control" placeholder="Postal Code" name="PostalCode">
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" class="form-control" placeholder="City" name="City">
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <input type="text" class="form-control" placeholder="State" name="State">
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <input type="text" class="form-control" placeholder="Country" name="Country">
+          </div>
+          <div class="form-group">
+            <label>Contact Person</label>
+            <input type="text" class="form-control" placeholder="Contact Person" name="ContactPerson">
+          </div>
+          <div class="form-group">
+            <label>Phone1</label>
+            <input type="text" class="form-control" placeholder="Phone1" name="Phone1">
+          </div>
+          <div class="form-group">
+            <label>Phone2</label>
+            <input type="text" class="form-control" placeholder="Phone2" name="Phone2">
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" name="Status">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--/add location modal-->
+
+
+<!--update location modal-->
+<div class="modal fade" id="updateShippointModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <form method="post" action="/shippoint/update">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Update ShipPoint</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Ship Point Code</label>
+            <input type="text" class="form-control" placeholder="Ship Point Code" id="ShipPointCode_inp" name="ShipPointCode" readonly>
+          </div>
+          <div class="form-group">
+            <label>Ship Point</label>
+            <input type="text" class="form-control" placeholder="Ship Point" id="ShipPointName_inp" name="ShipPointName">
+          </div>
+          <div class="form-group">
+            <label>Dealer</label>
+            <input type="text" class="form-control" placeholder="Dealer" id="Dealer_inp" name="Dealer">
+          </div>
+          <div class="form-group">
+            <label>Address1</label>
+            <input type="text" class="form-control" placeholder="Address1" id="Address1_inp" name="Address1">
+          </div>
+          <div class="form-group">
+            <label>Address2</label>
+            <input type="text" class="form-control" placeholder="Address2" id="Address2_inp" name="Address2">
+          </div>
+          <div class="form-group">
+            <label>Address3</label>
+            <input type="text" class="form-control" placeholder="Address3" id="Address3_inp"  name="Address3">
+          </div>
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input type="text" class="form-control" placeholder="Postal Code" id="PostalCode_inp" name="PostalCode">
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" class="form-control" placeholder="City" id="City_inp" name="City">
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <input type="text" class="form-control" placeholder="State" id="State_inp"  name="State">
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <input type="text" class="form-control" placeholder="Country" id="Country_inp" name="Country">
+          </div>
+          <div class="form-group">
+            <label>Contact Person</label>
+            <input type="text" class="form-control" placeholder="Contact Person" id="ContactPerson_inp" name="ContactPerson">
+          </div>
+          <div class="form-group">
+            <label>Phone1</label>
+            <input type="text" class="form-control" placeholder="Phone1" name="Phone1" id="Phone1_inp">
+          </div>
+          <div class="form-group">
+            <label>Phone2</label>
+            <input type="text" class="form-control" placeholder="Phone2" name="Phone2" id="Phone2_inp">
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" name="Status" id="Status_inp">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--/update item modal-->

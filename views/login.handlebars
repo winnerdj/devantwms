@@ -1,0 +1,23 @@
+
+  <div class="form" >
+     
+     <div class="login-logo">
+    <b>Devant</b>WMS
+    </div>
+     {{#if success_msg}}
+        <div class="alert alert-success">{{success_msg}}</div>
+      {{/if}}
+
+      {{#if error_msg}}
+        <div class="alert alert-danger">{{error_msg}}</div>
+      {{/if}}
+
+      {{#if error}}
+        <div class="alert alert-danger">{{error}}</div>
+      {{/if}}
+    <form class="login-form" method="post" action="/users/login">
+      <input type="text" name="username" placeholder="username"/>
+      <input type="password" name="password" placeholder="password"/>
+      <button>login</button>
+    </form>
+  </div>

@@ -1,0 +1,85 @@
+<form id="update_stock_conversion_form" method="POST" action="/stock_conversion/stock_conversion_dtl">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Stock Conversion Detail</h3>
+            </div>
+            {{#each stock_conversion_details}}
+             <div id="search_div">
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Stock Conversion No.
+                      </label>
+                      <input type="hidden" name="StockConversionNo" value="{{StockConversionNo}}"  class="form-control req">
+                      <input type="text" autocomplete="off" value="{{StockConversionNo}}" class="form-control" readonly>
+                    </div>
+                  </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Approver
+                    </label>
+                     <!--input type="text" name="AssignedEmployee" value="{{AssignedEmployee}}" class="form-control req">-->
+                     <input type="text" autocomplete="off" class="form-control  req" name="AssignApprover" value="{{tbl_user.FirstName}} {{tbl_user.LastName}}"   readonly>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Date Created
+                    </label>
+                    <input type="text"  autocomplete="off" value="{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}" class="form-control req" readonly>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Status
+                    </label>
+                    <input type="text" autocomplete="off" name="Status" value="{{Status}}" class="form-control req" readonly>
+                  </div>
+                </div>
+              </div><!--end of row-->
+            </div>   
+ <div class="row" style="padding:20px;">
+    <div class="col-12 col-md-12" >
+        
+            {{#if tbl_stock_conversion_details}}
+            <table class="table table-bordered" id="asn_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th>Item Code</th>
+                      <th>Item Description</th>
+                      <th>Serial No.</th>
+                      <th>Status</th>
+                      <th>Proposed Status</th>
+                      <th>Proposed Qty</th>
+                  </tr>
+              </thead>
+              {{#each tbl_stock_conversion_details}}
+                <tr>
+                    <td><input type="hidden" name="ID[]" value="{{ID}}" class="form-control" req readonly><input type="hidden" name="ItemCode[]" value="{{ItemCode}}" class="form-control" req readonly>{{ItemCode}}</td>
+                    <td><input type="hidden" name="ItemDescription[]" value="{{tbl_item_master.ItemDescription}}" class="form-control req" required readonly>{{tbl_item_master.ItemDescription}}</td>
+                    <td><input type="hidden" name="SerialNo[]" value="{{SerialNo}}" class="form-control req" required readonly>{{SerialNo}}</td>
+                    <td><input type="hidden" name="StatusFrom[]" value="{{StatusFrom}}" class="form-control req" required readonly>{{StatusFrom}}</td>
+                    <td><input type="hidden" name="StatusTo[]" value="{{StatusTo}}" class="form-control req" required readonly>{{StatusTo}}</td>
+                    <td><input type="hidden" name="QtyTo[]" value="{{QtyTo}}" class="form-control req" required readonly>{{QtyTo}}</td>
+                </tr>
+              {{/each}}
+            </table>
+            {{/if}}
+            
+    {{#compare Status "Proposed"}}   
+    <input type="hidden" name="submit_action" id="submit_action" value="Amend">
+    <input type="submit" class="btn btn-danger submit_btn" value="Cancel">
+    <input type="submit" class="btn btn-success submit_btn" value="Approve">
+    {{/compare}}
+    </div>
+</div>
+<br />
+{{/each}}
+</form>

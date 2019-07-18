@@ -1,0 +1,151 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Create Bin To Bin</h3>
+            </div>
+             
+                <div class="box-body">
+              <form method="POST" action="/bin-to-bin/create" id="create_bintobintplan_form">
+                <button type="submit" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#addItemModal"  id="add_btn">
+                  <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  Add Item
+                </button><br>
+                
+                <table  class="table bintobintable table-bordered table-hover table-responsive fixed-table-container" id="to_bintobin_tbl" style="margin-top: 20px; margin-bottom: 20px;">
+                  <thead>
+                  <tr>
+                    <th data-sortable="true" data-field="id">Item Code</th>
+                    <th >Item Description</th>
+                    <th  data-field="id">Stock Status</th>
+                    <th data-sortable="true">Serial No</div></th>
+                    <th data-sortable="true">UID</th>
+                    <th data-sortable="true">Batch</th>
+                    <th data-sortable="true">Status</th>
+                    <th data-sortable="true">From</th>
+                    <th data-sortable="true">To</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="tableContainer">
+                    <tr  class="nomatch">
+                      <th colspan="10"  style="text-align: center">No matching records found</th>
+                    </tr>
+                  </tbody>
+                  </table>
+                  <button type="submit" class="btn btn-success btn-sm submit_btn">Create Bin to bin Plan</button>
+                </form>
+          </div>
+                
+          <!-- /.box -->
+
+
+<!--update modal-->
+<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+        </div>
+        <div class="modal-body" style="max-height: 400px; overflow-y: scroll;">
+          
+  <div>
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Item Code
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="ItemCode" >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Stock Status
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="StockStatus" >
+                  </div>
+              </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Location
+                    </label>
+                    
+                    <div class="btn-group">
+                    <input type="text" autocomplete="off" class="form-control inputWclear getLocationCodeBtn" id="filterLoc" name="Location" data-toggle='modal' data-target='#locationCodeModal' readonly>
+                    <span class="inputclear glyphicon glyphicon-remove-circle"></span>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Batch
+                    </label>
+                    <input type="Batch" class="form-control" name="Batch" >
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Status
+                    </label>
+                    <select name="Status" class="form-control">
+                        <option></option>
+                        <option {{#compare Status_inp "ATP"}}selected{{/compare}}>ATP</option>
+                        <option {{#compare Status_inp "Unservisable"}}selected{{/compare}}>Unservisable</option>
+                        <option {{#compare Status_inp "Unloaded"}}selected{{/compare}}>Unloaded</option>
+                    </select>
+                  </div>
+                </div>
+              </div><!--end of row-->
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  id="search_btn">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> Search</span>
+                    </button>
+                  </div>
+                </div>
+              </div><!--end of row-->
+</div>
+
+
+
+
+          <table  class="table bintobintable table-bordered table-hover selectorTable" id="from_bintobin_tbl">
+                  <thead class="fixedHeader">
+                  <tr>
+                    <th>Item Code</th>
+                    <th>Description</th>
+                    <th>Stock Status</th>
+                    <th>Serial No</div></th>
+                    <th>UID</th>
+                    <th>Batch</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="nomatch">
+                      <td colspan="8" style="text-align: center" >No matching records found</td>
+                    </tr>
+                    
+                  </tbody>
+                  </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+</div>
+<!--/update modal-->

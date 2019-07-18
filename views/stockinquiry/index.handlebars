@@ -1,0 +1,143 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Stock Inquiry</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/stockinquiry">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Item Code
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="ItemCode" value="{{ItemCode_inp}}" >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Serial No
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="SerialNo" value="{{SerialNo_inp}}" >
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      UID
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="UID" value="{{UID_inp}}" >
+                  </div>
+                </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Stock Status
+                    </label>
+                    <select class="form-control" name="StockStatus" value="{{StockStatus_inp}}" >
+                        <option></option>
+                        <option {{#compare StockStatus_inp "Good"}}selected{{/compare}}>Good</option>
+                        <option {{#compare StockStatus_inp "Damaged"}}selected{{/compare}}>Damaged</option>
+                        <option {{#compare StockStatus_inp "Aging"}}selected{{/compare}}>Aging</option>
+                        <option {{#compare StockStatus_inp "Defective"}}selected{{/compare}}>Defective</option>
+                    </select>
+                  </div>
+                </div>
+                
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Location
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="Location" value="{{Location_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Batch
+                    </label>
+                    <select class="form-control" name="Batch" >
+                      <option></option>
+                      <option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Status
+                    </label>
+                    <select name="Status" class="form-control">
+                        <option></option>
+                        <option {{#compare Status_inp "Goods Receipt"}}selected{{/compare}}>Goods Receipt</option>
+                        <option {{#compare Status_inp "ATP"}}selected{{/compare}}>ATP</option>
+                        <option {{#compare Status_inp "Unservisable"}}selected{{/compare}}>Unservisable</option>
+                        <option {{#compare Status_inp "Picked"}}selected{{/compare}}>Picked</option>
+                        <option {{#compare Status_inp "Picking"}}selected{{/compare}}>Picking</option>
+                        <option {{#compare Status_inp "For Released"}}selected{{/compare}}>For Released</option>
+                        <option {{#compare Status_inp "Unloaded"}}selected{{/compare}}>Unloaded</option>
+                        <option {{#compare Status_inp "Allocated"}}selected{{/compare}}>Allocated</option>
+                    </select>
+                  </div>
+                </div>
+                </div><!--end of row-->
+                <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+                
+              
+              </form>
+              </div><!--end of row-->
+                
+              
+            </div>
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <a href="/stockinquiry/export_excel?ItemCode={{ItemCode_inp}}&SerialNo={{SerialNo_inp}}&UID={{UID_inp}}&StockStatus={{StockStatus_inp}}&Location={{Location_inp}}&Batch={{Batch_inp}}&Status={{Status_inp}}" target="_blank" class="btn btn-success pull-right" style="margin-right: 20px;margin-bottom: 20px;">Export</a>
+              <table  class="table table-bordered table-hover table-responsive table-pagination">
+                <thead>
+                <tr>
+                  <th data-sortable="true">Item Code</th>
+                  <th data-sortable="true">Item Description</th>
+                  <th data-sortable="true">Stock Status</th>
+                  <th data-sortable="true">Serial No</th>
+                  <th data-sortable="true">UID</th>
+                  <th data-sortable="true">Batch</th>
+                  <th data-sortable="true">Location</th>
+                  <th data-sortable="true">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each stockinquiry}}
+                  <tr>
+                    <td>{{ItemCode}}</td>
+                    <td>{{tbl_item_master.ItemDescription}}</td>
+                    <td>{{StockStatus}}</td>
+                    <td>{{SerialNo}}</td>
+                    <td>{{UID}}</td>
+                    <td>{{Batch}}</td>   
+                    <td>{{Location}}</td>  
+                    <td>{{Status}}</td>                       
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+

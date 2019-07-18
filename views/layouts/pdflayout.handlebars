@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <style>
+        body { font-family: Arial, Helvetica, sans-serif; font-size: 12px;}
+        #pageHeader table { font-size: 11px;}
+        .table td, .table th{border:1px solid black; padding:3px;spacing:0px; }
+        .table{width:100%; font-size: 11px;}
+        .table-head{font-size: 11px;}
+        .table td {text-align:center}
+        #subheader{font-size: 11px; text-align:left;}
+        .pagebreakexceptlast{page-break-after:always;}
+        .pagebreakexceptlast:last-child {page-break-after: avoid;}
+        .underline {border-bottom: black solid 1px; }
+        .tws{font-size: 11px;  }
+        </style>
+    </head>
+    <body>
+        
+           <!--<div>
+                <p style="display: inline-block;"><small>TIN: 009-883-590 (VAT REG)<br>
+                    268 C. Raymundo Ave., Maybunga, Pasig City<br>
+                    Tel: +632 232 -4550<br>
+                    Cx : customer.experience@logistikus.com
+                </small></p>
+            </div>-->
+            <table style="text-align:left;" class="table-head">
+                <tr>
+                    <th width="130px">WAREHOUSE CODE </th><td  class="underline"  width="330px">{{CustomerCode}}</td>
+                    <th width="100px;"></th>
+                    <th width="100px">DATE LOADED </th><td class="underline" width="330px"></td>
+                </tr>
+                <tr>
+                    <th>DISPATCH NO </th><td class="underline" >{{dispatchDetail.1.DispatchNo}}</td>
+                    <th width="100px;"></th>
+                    <th>LOAD START</th><td class="underline">{{dispatchDetail.1.CreatedDateTime1}}</td>
+                </tr>
+                <tr>
+                    <th>LOADING DOCK </th><td class="underline"  >{{dispatchDetail.1.DockNo}}</td>
+                    <th width="100px;"></th>
+                    <th>LOAD END</th><td class="underline">{{dispatchDetail.1.CreatedDateTime1}}</td>
+                </tr>
+                <tr>
+                    <th>SHIPMENT NO </th><td class="underline"  >{{dispatchDetail.1.ShipmentNo}}</td>
+                    <th width="100px;"></th>
+                    <th></th><td></td>
+                </tr>
+            </table>
+            <hr/>   
+        
+         <table class="table table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th colspan="6">Load List</th>
+                            </tr>
+                            <tr>
+                                <th>Item Code</th>
+                                <th>Branch Name</th>
+                                <th>DR No.</th>
+                                <th>Qty</th>
+                                <th>UoM</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            {{#each dispatchDetail}}
+                            <tr>
+                                <td>{{ItemCode}}</td>
+                                <td >{{ShipPointName}}</td>
+                                <td>{{detDRRefNo}}</td>
+                                <td style="">{{Count}}</td>
+                                <td>PCS</td>
+                                <td></td>
+                            </tr>
+                {{/each}}
+                
+          <tr><th colspan="3">Total</Th><th>{{sum}}</th><th colspan="2"></th></tr>         
+        </tbody>
+        </table>
+        
+        </div>
+        <table class="tws">
+            <tr  >
+                <th style="padding-top: 40px;">Prepared By:</th>
+                <td style="padding-top: 40px;">_________________________________________</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th style="text-align: center;">{{dispatchDetail.1.FirstName}} {{dispatchDetail.1.LastName}}</th>
+            </tr>
+            <tr>
+                <th style="padding-top: 30px;">Received By:</th>
+                <td style="padding-top: 30px;">_________________________________________</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th style="text-align: center;">{{dispatchDetail.1.Person}}</th>
+            </tr>
+        </table>
+             </div>
+            
+
+          
+            <div id="pageFooter"><span style="color: #444;">{{page}}</span>/<span>{{pages}}</span></div>
+    </body>
+</html>

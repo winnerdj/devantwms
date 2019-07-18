@@ -1,0 +1,322 @@
+<form id="update_pickplan_form" method="POST" action="/pickplan/pickplan_dtl">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Pick</h3>
+            </div>
+            {{#each pickplan_hdr}}
+             <div id="search_div">
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Pick Plan No
+                      </label>
+                      <input type="hidden" name="PickPlanNo" value="{{PickPlanNo}}" class="form-control">
+                      <input type="text" value="{{PickPlanNo}}" class="form-control req" disabled>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ODO No.
+                      </label>
+                      <input type="hidden" name="ODONo" value="{{ODONo}}" class="form-control">
+                      <input type="hidden" name="UUID" value="{{UUID}}" class="form-control">
+                      
+                      <input type="text" value="{{ODONo}}" class="form-control" disabled>
+                    </div>
+                  </div>
+                  <!--<div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Primary Ref Doc.
+                      </label>
+                      <input type="text" name="ODOPrimaryRefDocNo" value="{{ODOPrimaryRefDocNo}}" class="form-control" readonly>
+                    </div>
+                  </div>-->
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Shipment No.
+                      </label>
+                      <input type="text" name="ShipmentNo" value="{{ShipmentNo}}" class="form-control req" readonly>
+                    </div>
+                  </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Assigned Employee
+                    </label>
+                     <input type="text" class="form-control getEmployeeBtn req" name="AssignEmployee" value="{{AssignEmployee}}"  {{#compare Status "Planned"}}data-toggle="modal"{{/compare}} id="inp_ID" data-target="#employeeModal" readonly>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Date Created
+                    </label>
+                    <input type="text" name="CustomerCode" value="{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}" class="form-control req" readonly>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Status
+                    </label>
+                    <input type="text" name="Status" value="{{Status}}" class="form-control" disabled>
+                  </div>
+                </div>
+              </div><!--end of row-->
+            </div>
+
+            
+    
+<div class="row" style="padding:20px;">
+    <div class="col-12 col-md-12" >
+        
+            {{#if tbl_pickplan_details}}
+            <table class="table table-bordered" id="asn_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th>Item Code</th>
+                      <th>Serial No</th>
+                      <th>Ship To</th>
+                      <th>Sales Order No</th>
+                      <th>UID</th>
+                      <th>Batch</th>
+                  </tr>
+              </thead>
+              {{#each tbl_pickplan_details}}
+                <tr>
+                    <td>{{ItemCode}}</td>
+                    <td>{{SerialNo}}</td>
+                    <td>{{ShipPointCode}}<input type="hidden" name="ShipPointCode[]" value="{{ShipPointCode}}"></td>
+                    <td>{{SalesOrderNo}}</td>
+                    <td>{{UID}}</td>
+                    <td>{{Batch}}</td>
+                    <!--<td><button class="btn btn-xs btn-danger item_remove_btn">x</button></td>-->
+                </tr>
+              {{/each}}
+            </table>
+            {{else}}
+            {{#compare Status "Cancelled"}}
+             <table class="table table-bordered" id="asn_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th>Item Code</th>
+                      <th>Ship To</th>
+                      <th>SalesOrderNo</th>
+                      <th>Quantity</th>
+                  </tr>
+              </thead>
+              {{#each tbl_outbound_hdr.tbl_outbound_details}}
+              <tr>
+                    <td>{{ItemCode}}</td>
+                    <td>{{ShipPointCode}}</td>
+                    <td>{{SalesOrderNo}}</td>
+                    <td>{{OrderQty}}</td>
+                </tr>
+                {{/each}}
+            </table>
+            {{else}}<!--not cancelled-->
+            <div id="PickPerShippointTab" class="">
+              {{#each tbl_outbound_hdr.tbl_outbound_details as |childValue childKey|}}
+               {{#if @first}}
+                <ul  class="nav nav-pills">
+                <li class="active">
+                  <a  href="#{{ShipPointCode}}" data-toggle="tab">{{tbl_ship_point.ShipPointName}}</a>
+                </li>
+                {{else}} 
+                  {{#compareprev @index "ShipPointCode" ../tbl_outbound_hdr.tbl_outbound_details}}
+                    <li><a href="#{{ShipPointCode}}" data-toggle="tab">{{tbl_ship_point.ShipPointName}}</a>
+                    </li>
+                  {{/compareprev}}   
+                {{/if}}
+
+                {{#if @last}}
+                  </ul>
+                {{/if}}
+               {{/each}}
+
+
+              {{#each tbl_outbound_hdr.tbl_outbound_details as |childValue childKey|}}
+
+               {{#if @first}}
+                <div class="tab-content clearfix">
+                  <div class="tab-pane active" id="{{ShipPointCode}}">
+               {{else}} 
+                  {{#compareprev @index "ShipPointCode" ../tbl_outbound_hdr.tbl_outbound_details}}
+                    </div>
+                      <div class="tab-pane" id="{{ShipPointCode}}">
+                  {{/compareprev}}
+               {{/if}}
+                
+               
+                
+                    {{#if tbl_pickplan_detail_recoms}}
+                      {{#each tbl_pickplan_detail_recoms}}
+                        {{#if @first}}
+                          <div class="row" id="batchhead_{{inc @index}}{{UID}}">
+                    <div class="col-12 col-md-2">
+                      <label>ItemCode</label>
+                      <input type="hidden"  class="batch_head form-control " value="{{ShipPointCode}}" id="ShipPointCode_batch_{{inc @index}}{{UID}}" data-id= "ShipPointCode_{{inc @index}}{{UID}}" name="ShipPointCode_pa[]"  required>
+                      <input type="text"  autocomplete="off" value="{{ItemCode}}" id="itemcode_batch_{{inc @index}}{{UID}}" name="ItemCode_pa[]" class="ItemCode_head form-control req" readonly />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>UID</label>
+                      <input type="text" autocomplete="off" class="UID_head form-control " id="uid_batch_{{inc @index}}{{UID}}" data-id= "batch_{{inc @index}}{{UID}}" name="UID_pa[]" value="{{UID}}" required />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>Batch</label>
+                      <select  class="batch_head form-control " id="batch_batch_{{inc @index}}{{UID}}" data-id= "batch_{{inc @index}}{{UID}}" name="Batch_pa[]"  required>
+                        <option value=""></option>
+                        <option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>Location</label>
+                      <input type="text" autocomplete="off" class="location_head form-control " id="locationCode_batch_{{inc @index}}{{UID}}" data-id= "batch_{{inc @index}}{{UID}}" name="LocationCode_pa[]"  value="{{LocationCode}}" required>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <div class="col-lg-12 col-xm-2"> 
+                        <label># Items</label>
+                        <div class="input-group"> 
+                          <input type="number"  class="count_head form-control" id="count_batch_{{inc @index}}{{UID}}" value="{{../OrderQty}}" required placeholder="#" />
+                          <span class="input-group-btn">  
+                            <button class="btn btn-primary generate_pp_serial_btn btn-sm" data-id="batch_{{inc @index}}{{UID}}"><i class="fa fa-fw fa-plus-square"></i></button>  
+                          </span> 
+                        </div> 
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label style="color:white">-</label>
+                      <input type="Submit" value="new UID" class="btn form-control btn-primary new_row_uid" >
+                    </div>
+                </div>
+                  <div id="good_batch_{{inc @index}}{{UID}}">
+                    <div class="row added_row_batch_{{inc @index}}{{UID}}_{{inc @index}}"><div class="col-12 col-md-6"><label>Serial No</label><input type="text" name="recom_SerialNo[]" tabindex="-10000" class="form-control req" readonly value="{{SerialNo}}" >  <input type="hidden" name="ItemCode[]" class="form-control item_{{ItemCode}}{{ShipPointCode}}" value="{{ItemCode}}"><input type="hidden" name="ShipPointCode[]" class="form-control" value="{{ShipPointCode}}"><input type="hidden" name="UID[]" class="form-control childUID_batch_{{inc @index}}{{UID}}" value="{{UID}}"><input type="hidden" name="Batch[]" class="form-control childBatch_batch_{{inc @index}}{{UID}}" value="{{Batch}}"><input type="hidden" name="LocationCode[]" class="form-control childLocationCode_batch_{{inc @index}}{{UID}}" value="{{LocationCode}}"><div class="input-group"><input type="text" name="SerialNo[]" class="form-control req" required=""><span class="input-group-btn"><button class="btn btn-default remove_generated_serialinput_btn btn-sm" tabindex="14000" data-id="added_row_batch_{{inc @index}}{{UID}}_{{@index}}"><i class="fa fa-fw fa-times"></i></button></span></div></div><hr></div>
+                        {{else}}
+                          {{#compareprev @index "UID" ../tbl_pickplan_detail_recoms}}
+                          </div><!--end batch-->
+                                         <div class="row" id="batchhead_{{inc @index}}{{UID}}">
+                    <div class="col-12 col-md-2">
+                      <label>ItemCode</label>
+                      <input type="hidden"  class="batch_head form-control " value="{{ShipPointCode}}" id="ShipPointCode_batch_{{inc @index}}{{UID}}" data-id= "ShipPointCode_{{inc @index}}{{UID}}" name="ShipPointCode_pa[]"  required>
+                      <input type="text" autocomplete="off" value="{{ItemCode}}" id="itemcode_batch_{{inc @index}}{{UID}}" name="ItemCode_pa[]" class="ItemCode_head form-control req" readonly />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>UID</label>
+                      <input type="text" autocomplete="off" class="UID_head form-control " id="uid_batch_{{inc @index}}{{UID}}" data-id= "batch_{{inc @index}}{{UID}}" name="UID_pa[]" value="{{UID}}" required />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>Batch</label>
+                      <select  class="batch_head form-control " id="batch_batch_{{inc @index}}{{UID}}" data-id= "batch_{{inc @index}}{{UID}}" name="Batch_pa[]"  required>
+                        <option value=""></option>
+                        <option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>Location</label>
+                      <input type="text" autocomplete="off" class="location_head form-control " id="locationCode_batch_{{inc @index}}{{UID}}" data-id= "batch_{{inc @index}}{{UID}}" name="LocationCode_pa[]"  value="{{LocationCode}}" required>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <div class="col-lg-12 col-xm-2"> 
+                        <label># Items</label>
+                        <div class="input-group"> 
+                          <input type="number"  class="count_head form-control" id="count_batch_{{inc @index}}{{UID}}" value="{{../OrderQty}}" required placeholder="#" />
+                          <span class="input-group-btn">  
+                            <button class="btn btn-primary generate_pp_serial_btn btn-sm" data-id="batch_{{inc @index}}{{UID}}"><i class="fa fa-fw fa-plus-square"></i></button>  
+                          </span> 
+                        </div> 
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label style="color:white">-</label>
+                      <input type="Submit" value="new UID" class="btn form-control btn-primary new_row_uid" >
+                    </div>
+                </div>
+                  <div id="good_batch_{{inc @index}}{{UID}}">
+                    <div class="row added_row_batch_{{inc @index}}{{UID}}_{{inc @index}}"><div class="col-12 col-md-6"><label>Serial No</label><input type="text" name="recom_SerialNo[]" tabindex="-10000" class="form-control req" readonly value="{{SerialNo}}" >  <input type="hidden" name="ItemCode[]" class="form-control item_{{ItemCode}}{{ShipPointCode}}" value="{{ItemCode}}"><input type="hidden" name="ShipPointCode[]" class="form-control" value="{{ShipPointCode}}"><input type="hidden" name="UID[]" class="form-control childUID_batch_{{inc @index}}{{UID}}" value="{{UID}}"><input type="hidden" name="Batch[]" class="form-control childBatch_batch_{{inc @index}}{{UID}}" value="{{Batch}}"><input type="hidden" name="LocationCode[]" class="form-control childLocationCode_batch_{{inc @index}}{{UID}}" value="{{LocationCode}}"><div class="input-group"><input type="text" name="SerialNo[]" class="form-control req" required=""><span class="input-group-btn"><button class="btn btn-default remove_generated_serialinput_btn btn-sm" tabindex="14000" data-id="added_row_batch_{{inc @index}}{{UID}}_{{@index}}"><i class="fa fa-fw fa-times"></i></button></span></div></div><hr></div>
+                           {{else}}
+                           <div class="row added_row_batch_{{inc @index}}{{UID}}_{{inc @index}}"><div class="col-12 col-md-6"><label>Serial No</label><input type="text" name="recom_SerialNo[]"  tabindex="-10000"class="form-control req" readonly value="{{SerialNo}}" >  <input type="hidden" name="ItemCode[]" class="form-control item_{{ItemCode}}{{ShipPointCode}}" value="{{ItemCode}}"><input type="hidden" name="ShipPointCode[]" class="form-control" value="{{ShipPointCode}}"><input type="hidden" name="UID[]" class="form-control childUID_batch_{{inc @index}}{{UID}}" value="{{UID}}"><input type="hidden" name="Batch[]" class="form-control childBatch_batch_{{inc @index}}{{UID}}" value="{{Batch}}"><input type="hidden" name="LocationCode[]" class="form-control childLocationCode_batch_{{inc @index}}{{UID}}" value="{{LocationCode}}"><div class="input-group"><input type="text" name="SerialNo[]" class="form-control req" required=""><span class="input-group-btn"><button class="btn btn-default remove_generated_serialinput_btn btn-sm" tabindex="14000" data-id="added_row_batch_{{inc @index}}{{UID}}_{{@index}}"><i class="fa fa-fw fa-times"></i></button></span></div></div><hr></div>
+                          {{/compareprev}}
+                        {{/if}}<!--end if first-->
+                      {{/each}}
+                    </div><!--end of good_batch div-->
+                    {{else}}<!--else if no recom item-->
+                        <div class="row" id="batchhead_{{inc @index}}">
+                    <div class="col-12 col-md-2">
+                      <label>ItemCode</label>
+                      <input type="hidden"  class="batch_head form-control " value="{{ShipPointCode}}" id="ShipPointCode_batch_{{inc @index}}" data-id= "ShipPointCode_{{inc @index}}" name="ShipPointCode_pa[]"  required>
+                      <input type="text" autocomplete="off" value="{{ItemCode}}" id="itemcode_batch_{{inc @index}}" name="ItemCode_pa[]" class="ItemCode_head form-control req" readonly />
+                    </div>
+                    <div class="col-11 col-md-1">
+                      <label>SO No.</label>
+                      <input type="text" autocomplete="off" name="SalesOrderNo_pa[]"  value="{{SalesOrderNo}}" id="SalesOrderNo_batch_{{inc @index}}" name="SalesOrderNo_pa[]" class="SalesOrderNo_head form-control req" readonly />
+                      <input type="hidden" name="PONo_pa[]"  value="{{PONo}}" id="PONo_batch_{{inc @index}}" name="PONo_pa[]" class="PONo_head form-control req" readonly />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>UID</label>
+                      <input type="text" autocomplete="off" class="UID_head form-control " id="uid_batch_{{inc @index}}" data-id= "batch_{{inc @index}}" name="UID_pa[]" required />
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label>Batch</label>
+                      <select  class="batch_head form-control " id="batch_batch_{{inc @index}}" data-id= "batch_{{inc @index}}" name="Batch_pa[]"  required>
+                        
+                        <option value=""></option>
+                        <option value="Green">Green</option><option value="Pink">Pink</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="No Batch">No Batch</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-md-1">
+                      <label>Location</label>
+                      <input type="text" autocomplete="off" class="location_head form-control " id="locationCode_batch_{{inc @index}}" data-id= "batch_{{inc @index}}" name="LocationCode_pa[]"  required>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <div class="col-lg-12 col-xm-2"> 
+                        <label># Items</label>
+                        <div class="input-group"> 
+                          <input type="number"  class="count_head form-control" id="count_batch_{{inc @index}}" value="{{OrderQty}}" required placeholder="#" />
+                          <span class="input-group-btn">  
+                            <button class="btn btn-primary generate_pp_serial_btn btn-sm" data-id="batch_{{inc @index}}"><i class="fa fa-fw fa-plus-square"></i></button>  
+                          </span> 
+                        </div> 
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-2">
+                      <label style="color:white">-</label>
+                      <input type="Submit" value="new UID" class="btn form-control btn-primary new_row_uid" >
+                    </div>
+                   
+                </div>
+                  <div id="good_batch_{{inc @index}}" ></div>
+                    {{/if}}<!-- end of if no recommended items-->
+                    
+                    {{#if @last}}
+                  </div>
+                </div>
+               {{/if}}
+              {{/each}}
+          </div>
+            {{/compare}}
+            
+            {{/if}}
+            
+       
+    <input type="hidden" name="submit_action" id="submit_action" value="Amend">
+    {{#compare Status 'Planned'}}
+    <input type="submit" class="btn btn-warning submit_btn" value="Short Pick"> 
+    <input type="submit" class="btn btn-danger submit_btn" value="Cancel">
+    <input type="submit" class="btn btn-success submit_btn" value="Execute Pick">
+    {{/compare}}
+    {{#compare Status 'Picked'}}
+    <input type="submit" class="btn btn-success submit_btn" value="Create Dispatch">
+    {{/compare}}
+    {{#compare Status 'Short Picked'}}
+    <input type="submit" class="btn btn-success submit_btn" value="Create Dispatch">
+    {{/compare}}
+    </div>
+<br />
+{{/each}}
+</form>

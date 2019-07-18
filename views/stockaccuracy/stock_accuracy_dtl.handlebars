@@ -1,0 +1,186 @@
+<form id="update_stock_accuracy_form" method="POST" action="/stock_accuracy/stock_accuracy_dtl">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Stock Accuracy Detail</h3>
+            </div>
+            {{#each stock_accuracy_details}}
+             <div id="search_div">
+              <div class="row">
+                <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        Stock Accuracy No.
+                      </label>
+                      <input type="hidden" name="StockAccuracyNo" value="{{StockAccuracyNo}}"  class="form-control req">
+                      <input type="text" autocomplete="off" value="{{StockAccuracyNo}}" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Date Created
+                    </label>
+                    <input type="text"  autocomplete="off" value="{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}" class="form-control req" readonly>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Status
+                    </label>
+                    <input type="text" autocomplete="off" name="Status" value="{{Status}}" class="form-control req" readonly>
+                  </div>
+                </div>
+              </div><!--end of row-->
+            </div>   
+ <div class="row" style="padding:20px;">
+    <div class="col-12 col-md-12" >
+            {{#compareor Status 'Planned' }}
+                <button class="btn btn-primary" id="uploadbtn" data-toggle="modal" data-target="#uploadStockAccuracyModal" style="margin-bottom:30px;">
+                  <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                </button>
+            {{/compareor}}
+            
+            {{#if tbl_stock_accuracy_details}}
+            <table class="table table-bordered" id="stock_accuracy_edit_item_tbl">
+              <thead>
+                  <tr>
+                      <th width="35px">Item Code</th>
+                      <th  width="90px">Item Description</th>
+                      <th  width="50px">Serial No.</th>
+                      <th  width="35px">Qty</th>
+                      <th  width="35px">Actual Qty</th>
+                      <th  width="35px">Location</th>
+                      <th  width="35px">Actual Location</th>
+                  </tr>
+              </thead>
+              <tr>
+                <th id="loading_tr" colspan="7" style="text-align: center;">Loading data... </th>
+              </tr>
+              <tbody style="display:none;">
+              {{#each tbl_stock_accuracy_details}}
+                <tr id="{{SerialNo}}_serial" class="{{ItemCode}}_itemcode">
+                    <td>
+                      <input 
+                        type="hidden" 
+                        name="Variance[]" 
+                        value="{{Variance}}"
+                        class="form-control"
+                      />
+                      <input 
+                        type="hidden" 
+                        name="ID[]" 
+                        value="{{ID}}"
+                        class="form-control"
+                      />
+                      <input 
+                        type="hidden" 
+                        name="ItemCode[]" 
+                        value="{{ItemCode}}" 
+                        class="form-control"
+                      />
+                      <p>{{ItemCode}}</p>
+                    </td>
+                    <td>
+                        {{tbl_item_master.ItemDescription}}
+                    </td>
+                    <td >
+                      <input 
+                        type="hidden" 
+                        name="SerialNo[]" 
+                        value="{{SerialNo}}" 
+                        class="form-control req" 
+                      />
+                      <p>
+                        {{SerialNo}}
+                      </p>
+                    </td>
+                    <td>
+                      <input 
+                        type="hidden"
+                        name="Qty[]" 
+                        value="{{Qty}}" 
+                        class="form-control req"
+                        />
+                        <p>
+                          {{Qty}}
+                        </p>
+                    </td>
+                    <td>
+                      <div class="form-group actualqty" style="margin-bottom:0px;">
+                        <input 
+                          type="hidden" 
+                          name="ActualQty[]" 
+                          value="{{ActualQty}}" 
+                          class="form-control "
+                        />
+                        <p>{{ActualQty}}</p>
+                      </div>
+                      
+                    </td>
+                    <td>
+                      <input 
+                        type="hidden" 
+                        name="Location[]" 
+                        value="{{Location}}" 
+                        class="form-control " 
+                      />
+                      <p>
+                        {{Location}}
+                      </p>
+                    </td>
+                    <td> 
+                      <div class="form-group actuallocation" style="margin-bottom:0px;">
+                        <input 
+                          type="hidden" 
+                          name="ActualLocation[]" 
+                          value="{{ActualLocation}}" 
+                          class="form-control " 
+                        />
+                      </div>
+                      <p>{{ActualLocation}}</p>
+                    </td>
+                </tr>
+              {{/each}}
+              </tbody>
+            </table>
+            {{/if}}
+            
+    {{#compare Status "Planned"}}   
+    <input type="hidden" name="submit_action" id="submit_action" value="Amend">
+    <input type="submit" class="btn btn-danger submit_btn" value="Cancel">
+    <input type="submit" class="btn btn-success submit_btn" value="Approve">
+    {{/compare}}
+    </div>
+</div>
+<br />
+{{/each}}
+</form>
+  
+
+<!--upload modal-->
+<div class="modal fade" id="uploadStockAccuracyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="/stock_accuracy/uploadstockaccuracy" method="post" enctype="multipart/form-data" id="StockAccuracypload">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Upload Stock Accuracy</h5>
+        
+      </div>
+      <div class="modal-body">
+          <div class="input-group">
+            <input type="file" name="upload_stockaccuracy" id='upload_stockaccuracy' class="form-control" placeholder="Date" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+<!--/upload modal-->

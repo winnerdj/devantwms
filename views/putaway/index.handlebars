@@ -1,0 +1,123 @@
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Putaway</h3>
+            </div>
+             <div id="search_div">
+               <form method="get" action="/putaway" id="filter_putaway">
+              <h4 class="filter-title">Filter</h4>
+              <div class="row">
+                  <div class="col-12 col-md-2">
+                    <div class="form-group">
+                      <label class="control-sidebar-subheading">
+                        ASN No.
+                      </label>
+                      <input type="text" autocomplete="off" class="form-control" name="ASNNo" value="{{ASNNo_inp}}">
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Shipment No.
+                    </label>
+                    <input type="text" autocomplete="off" class="form-control" name="ShipmentNo" value="{{ShipmentNo_inp}}">
+                  </div>
+                </div>
+                
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date From
+                    </label>
+                    <input type="date" class="form-control" name="paramDate1" value="{{paramdate1_inp}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                      Date to
+                    </label>
+                    <input type="date" class="form-control" name="paramDate2" value="{{paramDate2_inp}}">
+                    <input type="hidden" name="Status" class="form-control" id="Status_inp" value="{{Status}}">
+                  </div>
+                </div>
+                
+              </div><!--end of row-->
+                <div class="row">
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-sm"  >
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"> </span> Search
+                    </button>
+                  </div>
+                </div>
+                
+              </div><!--end of row-->
+               </form>
+            </div>
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box success-status-box {{#if Status}}{{#compare Status "Planned"}}active{{/compare}}{{else}}active{{/if}}" data-id="Planned">
+                        <div class="status-box-header ">
+                            <h4>Planned</h4>
+                        </div>
+                        <div id="putaway_planned_count" class="putaway_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box primary-status-box {{#compare Status "Putaway"}}active{{/compare}}" data-id="Putaway">
+                        <div class="status-box-header ">
+                            <h4>Putaway</h4>
+                        </div>
+                        <div id="putaway_putaway_count" class="putaway_count">0</div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 divnopadding" >
+                    <div class="status-box danger-status-box {{#compare Status "Cancelled"}}active{{/compare}}" data-id="Cancelled">
+                        <div class="status-box-header">
+                            <h4>Cancelled</h4>
+                        </div>
+                        <div id="putaway_cancelled_count" class="putaway_count">0</div>
+                    </div>
+                  </div>
+              </div>
+              <table  class="table table-bordered table-hover table-responsive table-pagination">
+                <thead>
+                <tr>
+                  <th data-sortable="true">Putaway No</th>
+                  <th data-sortable="true">ASN No</th>
+                  <th data-sortable="true">Shipment No</th>
+                  <th data-sortable="true">GR No</th>
+                  <th data-sortable="true">Created Date</th>
+                  <th data-sortable="true">Created By</th>
+                  <th data-sortable="true">Modified By</th>
+                  <th data-sortable="true">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+               {{#each putaway_hdr}}
+                  <tr>
+                    <td><a href="/putaway/putaway_dtl?PACode={{PACode}}">{{PACode}}</a></td>
+                    <td>{{ASNNo}}</td>
+                    <td>{{ShipmentNo}}</td>
+                    <td>{{GRCode}}</td>
+                    <td>{{dateFormat CreatedDateTime  "YYYY-MM-DD  h:mm A"}}</td>   
+                    <td>{{tbl_user.FirstName}} {{tbl_user.LastName}}</td>
+                    <td>{{dateFormat ModifiedDateTime  "YYYY-MM-DD  h:mm A"}}</td>  
+                    <td>{{Status}}</td>                       
+                  </tr>
+                {{else}}
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+
